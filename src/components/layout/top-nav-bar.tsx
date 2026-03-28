@@ -7,8 +7,41 @@ import { navItems } from "@/data/mock";
 export function TopNavBar() {
   const pathname = usePathname();
 
+  if (pathname === "/about") {
+    return (
+      <header className="fixed top-0 w-full z-50 bg-slate-50/80 backdrop-blur-xl shadow-sm shadow-slate-900/5">
+        <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
+          <div className="text-2xl font-bold tracking-tighter text-primary">
+            The Academic Editorial
+          </div>
+          <nav className="hidden md:flex gap-8 items-center">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={
+                    isActive
+                      ? "text-primary font-bold border-b-2 border-primary pb-1"
+                      : "text-slate-600 font-medium hover:text-red-800 transition-colors"
+                  }
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+          <button className="md:hidden text-on-surface">
+            <span className="material-symbols-outlined">menu</span>
+          </button>
+        </div>
+      </header>
+    );
+  }
+
   return (
-    <header className="bg-surface dark:bg-slate-950 sticky top-0 z-50">
+    <header className="bg-[#f9f9fb] dark:bg-slate-950 sticky top-0 z-50">
       <div className="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
         <div className="flex items-center gap-8">
           <Link href="/">
@@ -61,7 +94,7 @@ export function TopNavBar() {
           )}
         </div>
       </div>
-      <div className="bg-surface-container-low dark:bg-slate-900 h-px w-full" />
+      <div className="bg-[#f3f3f5] dark:bg-slate-900 h-px w-full" />
     </header>
   );
 }
