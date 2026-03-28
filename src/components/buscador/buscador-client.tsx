@@ -2,10 +2,15 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import type { ApiCentro, ApiSeccion } from "@/lib/types";
-import { listSecciones, seccionToSubject, searchMateriasByClave } from "@/lib/api";
+import {
+  listSecciones,
+  seccionToSubject,
+  searchMateriasByClave,
+} from "@/lib/api";
 import { HeroSection } from "./hero-section";
 import { SubjectCard } from "./subject-card";
 import { MaterialIcon } from "@/components/ui/material-icon";
+import { StatsSidebar } from "./stats-sidebar";
 
 interface BuscadorClientProps {
   calendarioId: number;
@@ -49,7 +54,9 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
         });
 
         setTotal(data.total);
-        setResults((prev) => (append ? [...prev, ...data.results] : data.results));
+        setResults((prev) =>
+          append ? [...prev, ...data.results] : data.results,
+        );
       } catch {
         setError("No se pudo conectar con la API. Intenta de nuevo.");
       } finally {
@@ -68,7 +75,7 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
       setSkip(0);
       setNotFound(false);
 
-      if (!query.trim() || query.trim().length < 4) {
+      if (!query.trim()) {
         setMateriaId(null);
         fetchResults(null, selectedCentroId, 0, false);
         return;
@@ -76,6 +83,11 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
 
       setIsLoading(true);
       try {
+        if (query.trim().length < 4) {
+          setIsLoading(false);
+          return;
+        }
+
         const materia = await searchMateriasByClave(query.trim());
         if (!materia) {
           setNotFound(true);
@@ -108,74 +120,88 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
 
   return (
     <>
-      <HeroSection
-        centros={centros}
-        selectedCentroId={selectedCentroId}
-        onCentroChange={setSelectedCentroId}
-        query={query}
-        onQueryChange={setQuery}
-      />
+      <StatsSidebar results={results} />
+      <div className="lg:col-span-9">
+        <HeroSection
+          centros={centros}
+          selectedCentroId={selectedCentroId}
+          onCentroChange={setSelectedCentroId}
+          query={query}
+          onQueryChange={setQuery}
+          loading={isLoading}
+        />
 
-      {error && (
-        <div className="mb-8 p-4 rounded-xl bg-error-container text-on-error-container font-medium flex items-center gap-3">
-          <MaterialIcon name="error" />
-          {error}
-        </div>
-      )}
+        {error && (
+          <div className="mb-8 p-4 rounded-xl bg-error-container text-on-error-container font-medium flex items-center gap-3">
+            <MaterialIcon name="error" />
+            {error}
+          </div>
+        )}
 
-      {isLoading ? (
-        <div className="space-y-6">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-surface-container-lowest rounded-xl p-6 h-40 animate-pulse"
+        {isLoading ? (
+          <div className="space-y-6">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-surface-container-lowest rounded-xl p-6 h-40 animate-pulse"
+              />
+            ))}
+          </div>
+        ) : notFound ? (
+          <div className="py-24 text-center text-on-surface-variant">
+            <MaterialIcon
+              name="search_off"
+              className="text-5xl mb-4 opacity-40"
             />
-          ))}
-        </div>
-      ) : notFound ? (
-        <div className="py-24 text-center text-on-surface-variant">
-          <MaterialIcon name="search_off" className="text-5xl mb-4 opacity-40" />
-          <p className="font-headline font-bold text-xl">
-            Materia no encontrada
-          </p>
-          <p className="text-sm mt-2 opacity-60">
-            No existe ninguna materia con la clave &ldquo;{query}&rdquo;. Verifica la clave e intenta de nuevo.
-          </p>
-        </div>
-      ) : results.length === 0 ? (
-        <div className="py-24 text-center text-on-surface-variant">
-          <MaterialIcon name="search_off" className="text-5xl mb-4 opacity-40" />
-          <p className="font-headline font-bold text-xl">
-            No se encontraron secciones
-          </p>
-          <p className="text-sm mt-2 opacity-60">
-            Intenta con otro término de búsqueda o cambia el filtro de centro.
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          {results.map((seccion) => (
-            <SubjectCard key={seccion.id} subject={seccionToSubject(seccion)} />
-          ))}
+            <p className="font-headline font-bold text-xl">
+              Materia no encontrada
+            </p>
+            <p className="text-sm mt-2 opacity-60">
+              No existe ninguna materia con la clave &ldquo;{query}&rdquo;.
+              Verifica la clave e intenta de nuevo.
+            </p>
+          </div>
+        ) : results.length === 0 ? (
+          <div className="py-24 text-center text-on-surface-variant">
+            <MaterialIcon
+              name="search_off"
+              className="text-5xl mb-4 opacity-40"
+            />
+            <p className="font-headline font-bold text-xl">
+              No se encontraron secciones
+            </p>
+            <p className="text-sm mt-2 opacity-60">
+              Intenta con otro término de búsqueda o cambia el filtro de centro.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {results.map((seccion) => (
+              <SubjectCard
+                key={seccion.id}
+                subject={seccionToSubject(seccion)}
+              />
+            ))}
 
-          {hasMore && (
-            <div className="pt-8 flex justify-center">
-              <button
-                onClick={handleLoadMore}
-                disabled={isLoadingMore}
-                className="flex items-center gap-2 text-secondary font-headline font-bold hover:gap-4 transition-all disabled:opacity-50"
-              >
-                {isLoadingMore ? "Cargando..." : "Cargar más materias"}
-                {!isLoadingMore && <MaterialIcon name="arrow_forward" />}
-              </button>
-            </div>
-          )}
+            {hasMore && (
+              <div className="pt-8 flex justify-center">
+                <button
+                  onClick={handleLoadMore}
+                  disabled={isLoadingMore}
+                  className="flex items-center gap-2 text-secondary font-headline font-bold hover:gap-4 transition-all disabled:opacity-50"
+                >
+                  {isLoadingMore ? "Cargando..." : "Cargar más materias"}
+                  {!isLoadingMore && <MaterialIcon name="arrow_forward" />}
+                </button>
+              </div>
+            )}
 
-          <p className="text-center text-xs text-on-surface-variant/50 pt-2">
-            Mostrando {results.length} de {total} secciones
-          </p>
-        </div>
-      )}
+            <p className="text-center text-xs text-on-surface-variant/50 pt-2">
+              Mostrando {results.length} de {total} secciones
+            </p>
+          </div>
+        )}
+      </div>
     </>
   );
 }

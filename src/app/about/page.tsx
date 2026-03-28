@@ -1,7 +1,12 @@
 import { MaterialIcon } from "@/components/ui/material-icon";
 import Link from "next/dist/client/link";
+import { listCalendarios, getMostRecentCalendario } from "@/lib/api/calendarios";
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const allCalendarios = await listCalendarios();
+
+  const calendario = getMostRecentCalendario(allCalendarios);
+
   return (
     <main className="max-w-7xl mx-auto px-6 py-12">
       {/* Hero Section */}
@@ -62,7 +67,7 @@ export default function AboutPage() {
                 realmente importa: aprender y disfrutar tu vida universitaria.
               </p>
               <div className="mt-8 flex items-center gap-4 text-primary font-bold">
-                <Link href="/">Explorar Herramientas</Link>
+                <Link href="https://cucei.dev">Explorar Herramientas</Link>
                 <MaterialIcon name="arrow_forward" />
               </div>
             </div>
@@ -70,7 +75,7 @@ export default function AboutPage() {
               <MaterialIcon name="auto_awesome" className="text-4xl" />
               <div>
                 <div className="text-4xl font-black mb-2 tracking-tighter">
-                  2024-B
+                  {calendario ? calendario.name : "Ciclo No Disponible"}
                 </div>
                 <p className="text-primary-fixed/80 font-medium">
                   Optimizado para el ciclo actual con las últimas

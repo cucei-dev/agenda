@@ -1,4 +1,10 @@
-export function StatsSidebar() {
+import type {ApiSeccion } from "@/lib/types";
+
+type StatsSidebarProps = {
+  results: ApiSeccion[];
+};
+
+export function StatsSidebar({ results }: StatsSidebarProps) {
   return (
     <aside className="lg:col-span-3 space-y-8">
       <div className="bg-surface-container-low rounded-xl p-6">
@@ -10,13 +16,13 @@ export function StatsSidebar() {
             <span className="text-on-surface-variant">
               Materias encontradas
             </span>
-            <span className="font-bold text-primary">124</span>
+            <span className="font-bold text-primary">{results.length}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-on-surface-variant">
               Con cupo disponible
             </span>
-            <span className="font-bold text-tertiary">86</span>
+            <span className="font-bold text-tertiary">{results.filter(r => r.cupos_disponibles > 0).length}</span>
           </div>
         </div>
       </div>

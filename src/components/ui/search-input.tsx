@@ -4,12 +4,14 @@ interface SearchInputProps {
   placeholder?: string;
   value?: string;
   onChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
 export function SearchInput({
   placeholder = "Busca por clave de materia...",
   value,
   onChange,
+  disabled = false,
 }: SearchInputProps) {
   return (
     <div className="relative group max-w-4xl">
@@ -24,6 +26,7 @@ export function SearchInput({
         type="text"
         value={value}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
+        disabled={disabled}
       />
     </div>
   );

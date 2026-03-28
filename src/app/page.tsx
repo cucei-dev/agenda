@@ -27,10 +27,7 @@ export default async function Home() {
   return (
     <main className="max-w-7xl mx-auto px-6 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <StatsSidebar />
-        <div className="lg:col-span-9">
-          <BuscadorClient calendarioId={calendario.id} centros={centros} />
-        </div>
+        <BuscadorClient calendarioId={calendario.id} centros={centros} />
       </div>
     </main>
   );
