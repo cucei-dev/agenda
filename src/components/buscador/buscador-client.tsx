@@ -68,7 +68,7 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
       setSkip(0);
       setNotFound(false);
 
-      if (!query.trim()) {
+      if (!query.trim() || query.trim().length < 4) {
         setMateriaId(null);
         fetchResults(null, selectedCentroId, 0, false);
         return;
@@ -91,7 +91,7 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
         setError("No se pudo conectar con la API. Intenta de nuevo.");
         setIsLoading(false);
       }
-    }, 300);
+    }, 1000);
 
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);

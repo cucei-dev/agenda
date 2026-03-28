@@ -2,6 +2,12 @@ export type SubjectStatus = "disponible" | "lleno" | "waitlist";
 
 export type Centro = "CUCEI" | "CUCEA" | "CUAAD" | "CUCS" | "CUSH";
 
+export interface SubjectClase {
+  dia: string;
+  horaInicio: string;
+  horaFin: string;
+}
+
 export interface Subject {
   nrc: string;
   nombre: string;
@@ -11,6 +17,7 @@ export interface Subject {
   disponibles: number;
   centro: string;
   status: SubjectStatus;
+  clases: SubjectClase[];
 }
 
 export interface SidebarSubject {

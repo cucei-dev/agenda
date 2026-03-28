@@ -32,6 +32,10 @@ export const searchResults: Subject[] = [
     disponibles: 12,
     centro: "CUCEI",
     status: "disponible",
+    clases: [
+      { dia: "Lun", horaInicio: "08:00", horaFin: "10:00" },
+      { dia: "Mié", horaInicio: "08:00", horaFin: "10:00" },
+    ],
   },
   {
     nrc: "198273",
@@ -42,6 +46,7 @@ export const searchResults: Subject[] = [
     disponibles: 0,
     centro: "CUCEA",
     status: "lleno",
+    clases: [],
   },
   {
     nrc: "210594",
@@ -52,6 +57,10 @@ export const searchResults: Subject[] = [
     disponibles: 5,
     centro: "CUCEI",
     status: "disponible",
+    clases: [
+      { dia: "Mar", horaInicio: "10:00", horaFin: "12:00" },
+      { dia: "Jue", horaInicio: "10:00", horaFin: "12:00" },
+    ],
   },
 ];
 

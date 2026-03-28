@@ -56,9 +56,25 @@ export function SubjectCard({ subject }: SubjectCardProps) {
         <h2 className="font-headline font-bold text-2xl text-on-surface mb-1">
           {subject.nombre}
         </h2>
-        <p className="text-on-surface-variant text-sm mb-4">
+        <p className="text-on-surface-variant text-sm mb-3">
           {subject.profesor}
         </p>
+        {subject.clases.length > 0 ? (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {subject.clases.map((clase, i) => (
+              <span
+                key={i}
+                className="font-label text-xs text-on-surface-variant bg-surface-container-high px-2 py-1 rounded"
+              >
+                {clase.dia} {clase.horaInicio}–{clase.horaFin}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <p className="text-xs text-on-surface-variant/40 italic mb-4">
+            Sin horario asignado
+          </p>
+        )}
         <div className="grid grid-cols-3 gap-4 border-t border-outline-variant/15 pt-4">
           <div>
             <p className="font-label text-[10px] uppercase text-on-surface-variant opacity-60">
