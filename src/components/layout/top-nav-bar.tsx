@@ -13,7 +13,7 @@ export function TopNavBar() {
         <div className="flex items-center gap-8">
           <Link href="/">
             <span className="font-headline font-extrabold text-primary tracking-tight text-2xl">
-              Gaceta Académica
+              Planea UDG
             </span>
           </Link>
           <nav className="hidden md:flex items-center gap-6">
@@ -34,31 +34,6 @@ export function TopNavBar() {
               );
             })}
           </nav>
-        </div>
-        <div className="flex items-center gap-4">
-          {pathname === "/horario" ? (
-            <>
-              <div className="hidden md:flex items-center bg-surface-container-high rounded-full px-4 py-2 w-64 group focus-within:bg-surface-container-lowest focus-within:shadow-[0_8px_24px_rgba(26,28,29,0.04)] transition-all">
-                <span className="material-symbols-outlined text-on-surface-variant text-lg">
-                  search
-                </span>
-                <input
-                  className="bg-transparent border-none focus:ring-0 text-sm w-full font-body"
-                  placeholder="Buscar materias..."
-                  type="text"
-                />
-              </div>
-              <button className="md:hidden p-2 hover:bg-slate-100 rounded-md transition-all">
-                <span className="material-symbols-outlined">menu</span>
-              </button>
-            </>
-          ) : (
-            <button className="p-2 hover:bg-slate-100 rounded-md transition-all active:scale-95 active:duration-150">
-              <span className="material-symbols-outlined text-on-surface-variant">
-                search
-              </span>
-            </button>
-          )}
         </div>
       </div>
       <div className="bg-[#f3f3f5] h-px w-full" />

@@ -5,13 +5,13 @@ interface LocationInfoProps {
     aula: string;
     centro: string;
     status: string;
-    statusVariant: "available" | "waitlist";
+    statusVariant: "disponible" | "lleno";
   };
 }
 
 const statusStyles = {
-  available: "bg-tertiary-container text-on-tertiary-fixed",
-  waitlist: "bg-primary-fixed text-on-primary-fixed-variant",
+  disponible: "bg-tertiary-container text-on-tertiary-fixed",
+  lleno: "bg-primary-fixed text-on-primary-fixed-variant",
 };
 
 export function LocationInfo({ ubicacion }: LocationInfoProps) {

@@ -41,7 +41,7 @@ export const searchResults: Subject[] = [
     cuposTotales: 40,
     disponibles: 0,
     centro: "CUCEA",
-    status: "waitlist",
+    status: "lleno",
   },
   {
     nrc: "210594",
@@ -207,7 +207,7 @@ export const scheduleDetailSubjects: SubjectDetail[] = [
       aula: "Módulo L - Aula 102",
       centro: "Centro Universitario de Ciencias Exactas e Ingenierías",
       status: "DISPONIBLE",
-      statusVariant: "available",
+      statusVariant: "disponible",
     },
   },
   {
@@ -218,8 +218,8 @@ export const scheduleDetailSubjects: SubjectDetail[] = [
     ubicacion: {
       aula: "Beta - Laboratorio 3",
       centro: "Centro Universitario de Ciencias Exactas e Ingenierías",
-      status: "LISTA ESPERA",
-      statusVariant: "waitlist",
+      status: "SIN CUPOS",
+      statusVariant: "lleno",
     },
   },
   {
@@ -231,7 +231,7 @@ export const scheduleDetailSubjects: SubjectDetail[] = [
       aula: "",
       centro: "",
       status: "",
-      statusVariant: "available",
+      statusVariant: "disponible",
     },
   },
 ];

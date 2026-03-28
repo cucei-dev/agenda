@@ -4,7 +4,7 @@ export function Footer() {
       <div className="flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="text-center md:text-left">
           <span className="font-headline font-bold text-primary">
-            Gaceta Académica
+            Planea UDG
           </span>
           <p className="text-sm text-on-surface-variant mt-1">
             Basado en datos de SIIAU - Universidad de Guadalajara

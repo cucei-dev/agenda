@@ -1,4 +1,4 @@
-export type SubjectStatus = "disponible" | "waitlist" | "lleno";
+export type SubjectStatus = "disponible" | "lleno";
 
 export type Centro = "CUCEI" | "CUCEA" | "CUAAD" | "CUCS" | "CUSH";
 
@@ -43,7 +43,7 @@ export interface SubjectDetail {
     aula: string;
     centro: string;
     status: string;
-    statusVariant: "available" | "waitlist";
+    statusVariant: "disponible" | "lleno";
   };
 }
 
