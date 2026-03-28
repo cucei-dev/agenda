@@ -2,9 +2,9 @@ import { MaterialIcon } from "@/components/ui/material-icon";
 
 export default function AboutPage() {
   return (
-    <main className="pt-24 pb-20">
+    <main className="max-w-7xl mx-auto px-6 py-12">
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-8 pt-16 pb-24">
+        <section className="max-w-7xl mx-auto px-8 pb-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <span className="inline-block px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant text-[0.6875rem] font-bold tracking-widest uppercase rounded-sm">
