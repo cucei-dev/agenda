@@ -9,8 +9,8 @@ export default function HorarioPage() {
           Mi Horario Semanal
         </h1>
         <p className="font-body text-on-surface-variant max-w-2xl">
-          Visualización editorial de tu carga académica para el ciclo actual.
-          Organiza tus tiempos con claridad.
+          Visualización de tu carga académica para el ciclo actual. Organiza tus
+          tiempos con claridad.
         </p>
       </section>
 

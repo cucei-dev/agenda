@@ -1,6 +1,7 @@
 import { SubjectDetailCard } from "@/components/horario/subject-detail";
 import { SummaryPanel } from "@/components/horario/summary-panel";
-import { scheduleDetailSubjects } from "@/data/mock";
+import type { ApiSeccion, Subject } from "@/lib/types";
+import { listSecciones, seccionToSubject } from "@/lib/api";
 
 export default async function HorarioSlugPage({
   params,
@@ -9,9 +10,30 @@ export default async function HorarioSlugPage({
 }) {
   const { slug: _slug } = await params;
 
-  // In a real app, fetch schedule data based on _slug
-  const subjects = scheduleDetailSubjects;
-  const totalCreditos = 24;
+  const nrcs = Buffer.from(decodeURIComponent(_slug), "base64")
+    .toString("utf-8")
+    .split(",")
+    .map((s) => Number.parseInt(s.trim(), 10));
+  
+  for (const nrc of nrcs) {
+    console.log("NRC:", nrc);
+  }
+
+  const secciones: ApiSeccion[] = [];
+  for (const nrc of nrcs) {
+    const res = await listSecciones({ calendarioId: 1, nrc: nrc.toString() });
+    if (res.results.length > 0) {
+      const seccion = res.results[0];
+      console.log("Sección encontrada:", seccion.nrc, seccion.materia.name);
+      if (!seccion) continue;
+      secciones.push(seccion);
+    }
+  }
+
+  const subjects: Subject[] = secciones.map((seccion) =>
+    seccionToSubject(seccion),
+  );
+  const totalCreditos = subjects.reduce((sum, subj) => sum + subj.creditos, 0);
 
   return (
     <main className="max-w-7xl mx-auto px-6 py-12 md:py-20">
@@ -21,17 +43,15 @@ export default async function HorarioSlugPage({
         </h1>
         <p className="text-secondary font-medium max-w-2xl text-lg">
           Revisa la estructura final de tu ciclo académico antes de exportar.
-          Esta es una herramienta no oficial basada en datos públicos.
         </p>
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-8 space-y-6">
-          {subjects.map((subject, index) => (
+          {subjects.map((subject) => (
             <SubjectDetailCard
               key={subject.nrc}
               subject={subject}
-              showDetails={index < subjects.length - 1}
             />
           ))}
         </div>

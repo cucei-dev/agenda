@@ -1,9 +1,8 @@
-import type { SubjectDetail } from "@/lib/types";
+import type { Subject } from "@/lib/types";
 import { ScheduleInfo } from "./schedule-info";
-import { LocationInfo } from "./location-info";
 
 interface SubjectDetailCardProps {
-  subject: SubjectDetail;
+  subject: Subject;
   showDetails?: boolean;
 }
 
@@ -33,10 +32,10 @@ export function SubjectDetailCard({
         </div>
       </div>
 
-      {showDetails && subject.horarios.length > 0 && (
+      {showDetails && subject.clases.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <ScheduleInfo horarios={subject.horarios} />
-          <LocationInfo ubicacion={subject.ubicacion} />
+          <div></div>
+          <ScheduleInfo horarios={subject.clases} />
         </div>
       )}
     </div>

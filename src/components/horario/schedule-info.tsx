@@ -1,7 +1,8 @@
 import { MaterialIcon } from "@/components/ui/material-icon";
+import type { SubjectClase } from "@/lib/types";
 
 interface ScheduleInfoProps {
-  horarios: { dias: string; hora: string }[];
+  horarios: SubjectClase[];
 }
 
 export function ScheduleInfo({ horarios }: ScheduleInfoProps) {
@@ -16,11 +17,11 @@ export function ScheduleInfo({ horarios }: ScheduleInfoProps) {
       <div className="space-y-2">
         {horarios.map((h) => (
           <div
-            key={`${h.dias}-${h.hora}`}
+            key={`${h.dia}-${h.horaInicio}-${h.horaFin}`}
             className="flex justify-between items-center text-sm border-b border-outline-variant/15 pb-2 last:border-b-0"
           >
-            <span className="text-on-surface-variant">{h.dias}</span>
-            <span className="font-semibold">{h.hora}</span>
+            <span className="text-on-surface-variant">{h.dia}</span>
+            <span className="font-semibold">{`${h.horaInicio} - ${h.horaFin}`}</span>
           </div>
         ))}
       </div>

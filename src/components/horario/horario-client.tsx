@@ -108,7 +108,7 @@ export function HorarioClient() {
               <div className="flex gap-2">
                 <button
                   onClick={clearAll}
-                  className="bg-surface-container-high text-on-surface-variant px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1 hover:bg-error-container hover:text-on-error-container transition-colors"
+                  className="cursor-pointer bg-surface-container-high text-on-surface-variant px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1 hover:bg-error-container hover:text-on-error-container transition-colors"
                   title="Limpiar horario"
                 >
                   <MaterialIcon name="delete" className="text-sm" />
@@ -121,6 +121,15 @@ export function HorarioClient() {
                   Agregar
                 </Link>
               </div>
+            </div>
+            <div className="mt-4 flex justify-end">
+              <Link
+                href={"/horario/" + btoa(sections.map((s) => s.seccion.nrc).join(","))}
+                className="bg-gradient-to-br from-secondary to-secondary-container text-white px-4 py-2 rounded-md text-sm font-semibold shadow-md flex items-center gap-2"
+              >
+                <MaterialIcon name="file_download" className="text-sm" />
+                Exportar Horario
+              </Link>
             </div>
           </div>
         </div>

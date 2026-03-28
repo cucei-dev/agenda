@@ -28,7 +28,7 @@ export function SidebarSubject({
         {onRemove && (
           <button
             onClick={onRemove}
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-error-container"
+            className="cursor-pointer absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-error-container"
             title="Eliminar del horario"
           >
             <MaterialIcon

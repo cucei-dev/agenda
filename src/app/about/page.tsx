@@ -1,6 +1,9 @@
 import { MaterialIcon } from "@/components/ui/material-icon";
 import Link from "next/dist/client/link";
-import { listCalendarios, getMostRecentCalendario } from "@/lib/api/calendarios";
+import {
+  listCalendarios,
+  getMostRecentCalendario,
+} from "@/lib/api/calendarios";
 
 export default async function AboutPage() {
   const allCalendarios = await listCalendarios();
@@ -191,10 +194,11 @@ export default async function AboutPage() {
                 ¿Cómo se guardan mis datos?
               </h4>
               <p className="text-on-surface-variant font-body leading-relaxed">
-                Tu privacidad es fundamental. En Planea UDG almacenamos los
-                horarios que creas solo cuando decides explícitamente al dar
-                click en el botón de “guardar horario”. No requerimos inicio de
-                sesión ni recopilamos información personal adicional.
+                Tu privacidad es fundamental. Planea UDG no utiliza bases de
+                datos externas para guardar tus horarios. Toda la información
+                que selecciones se almacena de forma local en tu navegador
+                (LocalStorage). No requerimos login ni recolectamos información
+                personal.
               </p>
             </div>
           </div>

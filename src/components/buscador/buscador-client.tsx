@@ -35,7 +35,11 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [toast, setToast] = useState<{ message: string; type: "error" | "success" } | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "error" | "success";
+    id: number;
+  } | null>(null);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -133,6 +137,7 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
       setToast({
         message: `Conflicto de horario: ${c.existingMateria} (NRC ${c.existingNrc}) ya ocupa ${getDiaDisplayName(c.dia)} ${c.horaInicio}–${c.horaFin}`,
         type: "error",
+        id: seccion.id,
       });
     } else if (result.reason === "duplicate") {
       router.push("/horario");
@@ -140,6 +145,7 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
       setToast({
         message: "Esta sección no tiene horario asignado.",
         type: "error",
+        id: seccion.id,
       });
     }
     setTimeout(() => setToast(null), 5000);
@@ -159,28 +165,6 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
           onQueryChange={setQuery}
           loading={isLoading}
         />
-
-        {/* Toast notification */}
-        {toast && (
-          <div
-            className={`mb-6 p-4 rounded-xl font-medium flex items-center gap-3 animate-[fadeIn_0.2s_ease-out] ${
-              toast.type === "error"
-                ? "bg-error-container text-on-error-container"
-                : "bg-tertiary-container text-on-tertiary-container"
-            }`}
-          >
-            <MaterialIcon
-              name={toast.type === "error" ? "warning" : "check_circle"}
-            />
-            <span className="text-sm">{toast.message}</span>
-            <button
-              onClick={() => setToast(null)}
-              className="ml-auto opacity-60 hover:opacity-100"
-            >
-              <MaterialIcon name="close" className="text-base" />
-            </button>
-          </div>
-        )}
 
         {error && (
           <div className="mb-8 p-4 rounded-xl bg-error-container text-on-error-container font-medium flex items-center gap-3">
@@ -228,12 +212,35 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
         ) : (
           <div className="space-y-6">
             {results.map((seccion) => (
-              <SubjectCard
-                key={seccion.id}
-                subject={seccionToSubject(seccion)}
-                onAddToSchedule={() => handleAddToSchedule(seccion)}
-                isInSchedule={isInSchedule(seccion.nrc)}
-              />
+              <>
+                {/* Toast notification */}
+                {toast && toast.id === seccion.id && (
+                  <div
+                    className={`mb-6 p-4 rounded-xl font-medium flex items-center gap-3 animate-[fadeIn_0.2s_ease-out] ${
+                      toast.type === "error"
+                        ? "bg-error-container text-on-error-container"
+                        : "bg-tertiary-container text-on-tertiary-container"
+                    }`}
+                  >
+                    <MaterialIcon
+                      name={toast.type === "error" ? "warning" : "check_circle"}
+                    />
+                    <span className="text-sm">{toast.message}</span>
+                    <button
+                      onClick={() => setToast(null)}
+                      className="ml-auto opacity-60 hover:opacity-100"
+                    >
+                      <MaterialIcon name="close" className="text-base" />
+                    </button>
+                  </div>
+                )}
+                <SubjectCard
+                  key={seccion.id}
+                  subject={seccionToSubject(seccion)}
+                  onAddToSchedule={() => handleAddToSchedule(seccion)}
+                  isInSchedule={isInSchedule(seccion.nrc)}
+                />
+              </>
             ))}
 
             {hasMore && (
@@ -241,7 +248,7 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
                 <button
                   onClick={handleLoadMore}
                   disabled={isLoadingMore}
-                  className="flex items-center gap-2 text-secondary font-headline font-bold hover:gap-4 transition-all disabled:opacity-50"
+                  className="cursor-pointer flex items-center gap-2 text-secondary font-headline font-bold hover:gap-4 transition-all disabled:opacity-50"
                 >
                   {isLoadingMore ? "Cargando..." : "Cargar más materias"}
                   {!isLoadingMore && <MaterialIcon name="arrow_forward" />}

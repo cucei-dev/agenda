@@ -6,7 +6,7 @@ type StatsSidebarProps = {
 
 export function StatsSidebar({ results }: StatsSidebarProps) {
   return (
-    <aside className="lg:col-span-3 space-y-8">
+    <aside className="lg:col-span-3 space-y-8 sticky top-30 self-start">
       <div className="bg-surface-container-low rounded-xl p-6">
         <h3 className="font-headline font-bold text-xl mb-4 text-on-surface">
           Estado Global
