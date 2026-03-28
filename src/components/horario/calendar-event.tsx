@@ -1,38 +1,44 @@
-import type { CalendarEventData } from "@/lib/types";
 import { MaterialIcon } from "@/components/ui/material-icon";
-import { colorSchemeMap } from "@/data/mock";
+import type { ScheduleColorScheme } from "@/lib/types";
 
-interface CalendarEventProps {
-  event: CalendarEventData;
+export interface ScheduleCalendarEvent {
+  materia: string;
+  horaInicio: string;
+  horaFin: string;
+  nrc: string;
+  color: ScheduleColorScheme;
 }
 
-export function CalendarEvent({ event }: CalendarEventProps) {
-  const colors = colorSchemeMap[event.colorScheme];
+interface CalendarEventProps {
+  event: ScheduleCalendarEvent;
+  slotMinutes: number;
+}
 
-  if (event.colorScheme === "workshop") {
-    return (
-      <div className="absolute inset-x-2 top-2 h-[180px] bg-tertiary-container/30 border-2 border-dashed border-tertiary/20 rounded-xl p-3 flex items-center justify-center">
-        <p className="text-tertiary font-bold text-[9px] uppercase tracking-tighter rotate-90 text-center">
-          Taller Extra
-        </p>
-      </div>
-    );
-  }
+export function CalendarEvent({ event, slotMinutes }: CalendarEventProps) {
+  const [startH, startM] = event.horaInicio.split(":").map(Number);
+  const [endH, endM] = event.horaFin.split(":").map(Number);
+  const durationMin = endH * 60 + endM - (startH * 60 + startM);
+
+  const heightPercent = (durationMin / slotMinutes) * 100;
 
   return (
     <div
-      className={`absolute inset-x-2 top-2 h-[80px] ${colors.bg} rounded-xl p-3 shadow-sm flex flex-col justify-between group hover:shadow-md transition-all`}
+      className="absolute inset-x-1 top-0 rounded-xl p-2 shadow-sm flex flex-col justify-between group hover:shadow-md transition-all overflow-hidden border"
+      style={{
+        height: `${heightPercent}%`,
+        backgroundColor: event.color.bg,
+        color: event.color.text,
+        borderColor: event.color.border,
+      }}
     >
-      <h4
-        className={`${colors.text} font-semibold text-[11px] leading-tight line-clamp-2`}
-      >
+      <h4 className="font-semibold text-[11px] leading-tight line-clamp-2">
         {event.materia}
       </h4>
-      <div
-        className={`flex items-center gap-1 ${colors.subtext} text-[10px]`}
-      >
-        <MaterialIcon name="location_on" className="text-[12px]" />
-        <span>{event.aula}</span>
+      <div className="flex items-center gap-1 text-[10px] opacity-80">
+        <MaterialIcon name="schedule" className="text-[12px]" />
+        <span>
+          {event.horaInicio}–{event.horaFin}
+        </span>
       </div>
     </div>
   );

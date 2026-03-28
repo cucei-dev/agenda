@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
 import type { ApiCentro, ApiSeccion } from "@/lib/types";
 import {
   listSecciones,
   seccionToSubject,
   searchMateriasByClave,
 } from "@/lib/api";
+import { useScheduleStore, type AddResult } from "@/lib/schedule-store";
+import { getDiaDisplayName } from "@/lib/diaMap";
 import { HeroSection } from "./hero-section";
 import { SubjectCard } from "./subject-card";
 import { MaterialIcon } from "@/components/ui/material-icon";
@@ -20,6 +23,8 @@ interface BuscadorClientProps {
 const PAGE_SIZE = 20;
 
 export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
+  const router = useRouter();
+  const { addSection, isInSchedule } = useScheduleStore();
   const [query, setQuery] = useState("");
   const [selectedCentroId, setSelectedCentroId] = useState<number | null>(null);
   const [results, setResults] = useState<ApiSeccion[]>([]);
@@ -30,6 +35,7 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: "error" | "success" } | null>(null);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -116,6 +122,29 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
     fetchResults(materiaId, selectedCentroId, nextSkip, true);
   }
 
+  function handleAddToSchedule(seccion: ApiSeccion) {
+    const result: AddResult = addSection(seccion);
+    if (result.ok) {
+      router.push("/horario");
+      return;
+    }
+    if ("conflict" in result) {
+      const c = result.conflict;
+      setToast({
+        message: `Conflicto de horario: ${c.existingMateria} (NRC ${c.existingNrc}) ya ocupa ${getDiaDisplayName(c.dia)} ${c.horaInicio}–${c.horaFin}`,
+        type: "error",
+      });
+    } else if (result.reason === "duplicate") {
+      router.push("/horario");
+    } else {
+      setToast({
+        message: "Esta sección no tiene horario asignado.",
+        type: "error",
+      });
+    }
+    setTimeout(() => setToast(null), 5000);
+  }
+
   const hasMore = results.length < total;
 
   return (
@@ -130,6 +159,28 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
           onQueryChange={setQuery}
           loading={isLoading}
         />
+
+        {/* Toast notification */}
+        {toast && (
+          <div
+            className={`mb-6 p-4 rounded-xl font-medium flex items-center gap-3 animate-[fadeIn_0.2s_ease-out] ${
+              toast.type === "error"
+                ? "bg-error-container text-on-error-container"
+                : "bg-tertiary-container text-on-tertiary-container"
+            }`}
+          >
+            <MaterialIcon
+              name={toast.type === "error" ? "warning" : "check_circle"}
+            />
+            <span className="text-sm">{toast.message}</span>
+            <button
+              onClick={() => setToast(null)}
+              className="ml-auto opacity-60 hover:opacity-100"
+            >
+              <MaterialIcon name="close" className="text-base" />
+            </button>
+          </div>
+        )}
 
         {error && (
           <div className="mb-8 p-4 rounded-xl bg-error-container text-on-error-container font-medium flex items-center gap-3">
@@ -180,6 +231,8 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
               <SubjectCard
                 key={seccion.id}
                 subject={seccionToSubject(seccion)}
+                onAddToSchedule={() => handleAddToSchedule(seccion)}
+                isInSchedule={isInSchedule(seccion.nrc)}
               />
             ))}
 

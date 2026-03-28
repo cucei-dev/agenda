@@ -1,5 +1,6 @@
 import type { Subject } from "@/lib/types";
 import { PrimaryButton } from "@/components/ui/primary-button";
+import { MaterialIcon } from "@/components/ui/material-icon";
 
 const statusStyles: Record<
   Subject["status"],
@@ -30,9 +31,15 @@ const accentColors: Record<Subject["status"], string> = {
 
 interface SubjectCardProps {
   subject: Subject;
+  onAddToSchedule?: () => void;
+  isInSchedule?: boolean;
 }
 
-export function SubjectCard({ subject }: SubjectCardProps) {
+export function SubjectCard({
+  subject,
+  onAddToSchedule,
+  isInSchedule,
+}: SubjectCardProps) {
   const status = statusStyles[subject.status];
   const accent = accentColors[subject.status];
 
@@ -101,7 +108,18 @@ export function SubjectCard({ subject }: SubjectCardProps) {
         </div>
       </div>
       <div className="flex items-end justify-end md:w-48">
-        <PrimaryButton label="Agregar al horario" icon="add" />
+        {isInSchedule ? (
+          <span className="flex items-center gap-2 text-tertiary font-medium text-sm px-6 py-3">
+            <MaterialIcon name="check_circle" filled className="text-base" />
+            En horario
+          </span>
+        ) : (
+          <PrimaryButton
+            label="Agregar al horario"
+            icon="add"
+            onClick={onAddToSchedule}
+          />
+        )}
       </div>
     </article>
   );

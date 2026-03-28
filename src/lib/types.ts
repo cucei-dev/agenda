@@ -65,6 +65,19 @@ export interface FilterOption {
   value: string;
 }
 
+// ── Schedule (Horario) types ──────────────────────────────────────────────────
+
+export interface ScheduleColorScheme {
+  bg: string;
+  text: string;
+  border: string;
+}
+
+export interface ScheduleEntry {
+  seccion: ApiSeccion;
+  colorIndex: number;
+}
+
 // ── SIIAPI response types ─────────────────────────────────────────────────────
 
 export interface ApiPagination<T> {
