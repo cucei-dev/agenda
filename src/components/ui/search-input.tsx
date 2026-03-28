@@ -2,10 +2,14 @@
 
 interface SearchInputProps {
   placeholder?: string;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 export function SearchInput({
-  placeholder = "Busca por nombre de materia, profesor o NRC...",
+  placeholder = "Busca por clave de materia...",
+  value,
+  onChange,
 }: SearchInputProps) {
   return (
     <div className="relative group max-w-4xl">
@@ -18,6 +22,8 @@ export function SearchInput({
         className="w-full pl-16 pr-6 py-6 bg-surface-container-high rounded-full border-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all text-lg shadow-[0_8px_24px_rgba(26,28,29,0.04)] placeholder:text-on-surface-variant/50"
         placeholder={placeholder}
         type="text"
+        value={value}
+        onChange={onChange ? (e) => onChange(e.target.value) : undefined}
       />
     </div>
   );

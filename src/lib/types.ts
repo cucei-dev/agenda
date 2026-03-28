@@ -1,4 +1,4 @@
-export type SubjectStatus = "disponible" | "lleno";
+export type SubjectStatus = "disponible" | "lleno" | "waitlist";
 
 export type Centro = "CUCEI" | "CUCEA" | "CUAAD" | "CUCS" | "CUSH";
 
@@ -9,7 +9,7 @@ export interface Subject {
   creditos: number;
   cuposTotales: number;
   disponibles: number;
-  centro: Centro;
+  centro: string;
   status: SubjectStatus;
 }
 
@@ -57,3 +57,64 @@ export interface FilterOption {
   label: string;
   value: string;
 }
+
+// ── SIIAPI response types ─────────────────────────────────────────────────────
+
+export interface ApiPagination<T> {
+  total: number;
+  results: T[];
+}
+
+export interface ApiCalendario {
+  id: number;
+  name: string;
+  siiau_id: string;
+}
+
+export interface ApiCentro {
+  id: number;
+  name: string;
+  siiau_id: string;
+}
+
+export interface ApiMateria {
+  id: number;
+  name: string;
+  creditos: number;
+  clave: string;
+}
+
+export interface ApiProfesor {
+  id: number;
+  name: string;
+}
+
+export interface ApiClase {
+  id: number;
+  seccion_id: number;
+  sesion: number | null;
+  hora_inicio: string | null;
+  hora_fin: string | null;
+  dia: number | null;
+  aula_id: number | null;
+}
+
+export interface ApiSeccion {
+  id: number;
+  name: string;
+  nrc: string;
+  cupos: number;
+  cupos_disponibles: number;
+  periodo_inicio: string | null;
+  periodo_fin: string | null;
+  centro_id: number;
+  materia_id: number;
+  profesor_id: number | null;
+  calendario_id: number;
+  centro: ApiCentro;
+  materia: ApiMateria;
+  profesor: ApiProfesor | null;
+  calendario: ApiCalendario;
+  clases: ApiClase[];
+}
+

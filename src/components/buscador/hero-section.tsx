@@ -1,20 +1,45 @@
 import { SearchInput } from "@/components/ui/search-input";
 import { FilterChip } from "@/components/ui/filter-chip";
-import { centroFilters } from "@/data/mock";
+import type { ApiCentro } from "@/lib/types";
+import { getCentroDisplayName } from "@/lib/centroMap";
 
-export function HeroSection() {
+interface HeroSectionProps {
+  centros: ApiCentro[];
+  selectedCentroId: number | null;
+  onCentroChange: (id: number | null) => void;
+  query: string;
+  onQueryChange: (q: string) => void;
+}
+
+export function HeroSection({
+  centros,
+  selectedCentroId,
+  onCentroChange,
+  query,
+  onQueryChange,
+}: HeroSectionProps) {
   return (
     <section className="mb-16">
       <h1 className="font-headline font-bold text-5xl md:text-6xl tracking-tight mb-8 text-on-surface">
         Encuentra tu próximo <span className="text-primary">desafío</span>.
       </h1>
-      <SearchInput />
+      <SearchInput value={query} onChange={onQueryChange} />
       <div className="mt-8 flex flex-wrap gap-3">
         <span className="font-label text-label-sm uppercase tracking-widest font-semibold flex items-center text-on-surface-variant mr-2">
           Centros:
         </span>
-        {centroFilters.map((filter, i) => (
-          <FilterChip key={filter.value} label={filter.label} active={i === 0} />
+        <FilterChip
+          label="Todos"
+          active={selectedCentroId === null}
+          onClick={() => onCentroChange(null)}
+        />
+        {centros.map((centro) => (
+          <FilterChip
+            key={centro.id}
+            label={getCentroDisplayName(centro.siiau_id)}
+            active={selectedCentroId === centro.id}
+            onClick={() => onCentroChange(centro.id)}
+          />
         ))}
       </div>
     </section>
