@@ -21,7 +21,7 @@ export function seccionToSubject(s: ApiSeccion): Subject {
     creditos: s.materia.creditos,
     cuposTotales: s.cupos,
     disponibles,
-    centro: getCentroDisplayName(s.centro.siiau_id),
+    centro: getCentroDisplayName(s.centro.siiau_id, s.centro.name),
     status,
     clases,
   };

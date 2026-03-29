@@ -1,5 +1,4 @@
-import { SubjectDetailCard } from "@/components/horario/subject-detail";
-import { SummaryPanel } from "@/components/horario/summary-panel";
+import { ExportClient } from "@/components/horario/export-client";
 import type { ApiSeccion, Subject } from "@/lib/types";
 import { listSecciones, seccionToSubject } from "@/lib/api";
 
@@ -14,17 +13,12 @@ export default async function HorarioSlugPage({
     .toString("utf-8")
     .split(",")
     .map((s) => Number.parseInt(s.trim(), 10));
-  
-  for (const nrc of nrcs) {
-    console.log("NRC:", nrc);
-  }
 
   const secciones: ApiSeccion[] = [];
   for (const nrc of nrcs) {
     const res = await listSecciones({ calendarioId: 1, nrc: nrc.toString() });
     if (res.results.length > 0) {
       const seccion = res.results[0];
-      console.log("Sección encontrada:", seccion.nrc, seccion.materia.name);
       if (!seccion) continue;
       secciones.push(seccion);
     }
@@ -46,17 +40,11 @@ export default async function HorarioSlugPage({
         </p>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div className="lg:col-span-8 space-y-6">
-          {subjects.map((subject) => (
-            <SubjectDetailCard
-              key={subject.nrc}
-              subject={subject}
-            />
-          ))}
-        </div>
-        <SummaryPanel totalCreditos={totalCreditos} />
-      </div>
+      <ExportClient
+        subjects={subjects}
+        secciones={secciones}
+        totalCreditos={totalCreditos}
+      />
     </main>
   );
 }

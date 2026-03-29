@@ -2,9 +2,15 @@ import { MaterialIcon } from "@/components/ui/material-icon";
 
 interface SummaryPanelProps {
   totalCreditos: number;
+  onDownloadPDF?: () => void;
+  onExportCalendar?: () => void;
 }
 
-export function SummaryPanel({ totalCreditos }: SummaryPanelProps) {
+export function SummaryPanel({
+  totalCreditos,
+  onDownloadPDF,
+  onExportCalendar,
+}: SummaryPanelProps) {
   return (
     <aside className="lg:col-span-4 sticky top-28 space-y-6">
       <div className="bg-surface-container-high rounded-2xl p-8 space-y-8 overflow-hidden relative">
@@ -22,29 +28,23 @@ export function SummaryPanel({ totalCreditos }: SummaryPanelProps) {
               Créditos
             </span>
           </div>
-          <p className="text-sm text-on-surface-variant mt-2 leading-relaxed">
-            Carga académica recomendada para este ciclo escolar.
-          </p>
         </div>
 
         <div className="space-y-3 pt-4 border-t border-outline-variant/30">
-          <button className="w-full bg-gradient-to-br from-primary to-primary-container text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg shadow-primary/10">
+          <button
+            onClick={onDownloadPDF}
+            className="w-full bg-gradient-to-br from-primary to-primary-container text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg shadow-primary/10 cursor-pointer"
+          >
             <MaterialIcon name="picture_as_pdf" />
             Descargar PDF
           </button>
-          <button className="w-full bg-white border border-outline-variant/20 text-secondary py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-surface-container-lowest active:scale-95 shadow-sm">
+          <button
+            onClick={onExportCalendar}
+            className="w-full bg-white border border-outline-variant/20 text-secondary py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-surface-container-lowest active:scale-95 shadow-sm cursor-pointer"
+          >
             <MaterialIcon name="calendar_add_on" />
             Exportar Calendario
           </button>
-        </div>
-
-        <div className="bg-tertiary/10 p-4 rounded-xl flex gap-3">
-          <MaterialIcon name="info" className="text-tertiary" />
-          <p className="text-[11px] leading-snug text-on-tertiary-fixed-variant">
-            Al exportar al calendario, se crearán eventos recurrentes para todo
-            el semestre 2024-B. Verifique las fechas oficiales en su centro
-            universitario.
-          </p>
         </div>
       </div>
 

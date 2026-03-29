@@ -38,7 +38,7 @@ export function HeroSection({
         {centros.map((centro) => (
           <FilterChip
             key={centro.id}
-            label={getCentroDisplayName(centro.siiau_id)}
+            label={getCentroDisplayName(centro.siiau_id, centro.name)}
             active={selectedCentroId === centro.id}
             onClick={() => onCentroChange(centro.id)}
           />
