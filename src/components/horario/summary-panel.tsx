@@ -1,4 +1,5 @@
 import { MaterialIcon } from "@/components/ui/material-icon";
+import Image from "next/image";
 
 interface SummaryPanelProps {
   totalCreditos: number;
@@ -49,11 +50,12 @@ export function SummaryPanel({
       </div>
 
       <div className="p-4">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt="Estudiantes en biblioteca moderna"
+        <Image
+          alt="CUCEI"
           className="w-full h-48 object-cover rounded-2xl grayscale contrast-125 opacity-40"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtZRjhKSvMf3_ZxBnMXl6kTiBF2mBsiyY_cqUhBeM2thQmvDYMPt62F7Er5O-pooeXChAgFBTfhqTkMS0lH4T2D10qiv74M6yUiWof8w1LURup8eMrqS_5va1VU5Ks7LmM9prnjUd7drlIvbid-29WGysiRKHQyb2nNTGa0fVkqRRuAO6ezIxjNykXVqfPuX9CXo8IBlT7Z0R_ceu-U10LQ4Utpnb3zgEOGR6TBi_1iGOfmhwPOP7eehL1H3wQnWtm1uao9fwO1-k"
+          src="/images/cucei.jpg"
+          width={1000}
+          height={667}
         />
       </div>
     </aside>

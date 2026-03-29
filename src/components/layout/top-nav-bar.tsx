@@ -13,7 +13,7 @@ export function TopNavBar() {
         <div className="flex items-center gap-8">
           <Link href="/">
             <span className="font-headline font-extrabold text-primary tracking-tight text-2xl">
-              Planea UDG
+              Agenda UDG
             </span>
           </Link>
           <nav className="hidden md:flex items-center gap-6">

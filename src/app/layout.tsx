@@ -16,7 +16,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Planea UDG",
+  title: "Agenda UDG",
   description:
     "Buscador de materias y horarios académicos - Universidad de Guadalajara",
 };

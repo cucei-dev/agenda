@@ -4,6 +4,7 @@ import {
   listCalendarios,
   getMostRecentCalendario,
 } from "@/lib/api/calendarios";
+import Image from "next/image";
 
 export default async function AboutPage() {
   const allCalendarios = await listCalendarios();
@@ -20,7 +21,7 @@ export default async function AboutPage() {
               Iniciativa Independiente
             </span>
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-on-surface leading-[1.1]">
-              Acerca de <span className="text-primary">Planea UDG</span>
+              Acerca de <span className="text-primary">Agenda UDG</span>
             </h1>
             <p className="text-xl text-on-surface-variant leading-relaxed max-w-xl font-body">
               Elegir tus materias cada semestre no debería ser un dolor de
@@ -31,11 +32,12 @@ export default async function AboutPage() {
           </div>
           <div className="relative group">
             <div className="absolute -inset-4 bg-primary/5 rounded-xl blur-2xl group-hover:bg-primary/10 transition-all duration-500" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt="Estudiantes colaborando"
+            <Image
+              alt="musa"
               className="relative rounded-xl shadow-2xl w-full h-[400px] object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaHkVYiWp001T1GAfGMcwRHOoBqiujnbiRhhwiyHJoS9u00sTak0zKkTkMcKQ72a8Ka0Q4dvWxONQdGHBA7GFsFhl38IIy35Ageb2MaAjezKsa0ht9q4-nLopx80UJ4CN7EwYAy56uTNwFrh-slnTSII9D7KIabnPVt7gHVef7KFagvZ2a41EL2mZ4gAzMjbtlyIMNLMLPtLUJWjpxsnqxMictDQ92pdnEBx9K2KRZ_zIz2qAIq_At1mp93a4q8B4Zvk5ANv9NsfU"
+              src="/images/musa.jpg"
+              width={1920}
+              height={1217}
             />
           </div>
         </div>
@@ -134,7 +136,7 @@ export default async function AboutPage() {
               <span className="text-secondary">Transparencia Radical</span>
             </h2>
             <p className="text-on-surface-variant text-lg font-body leading-relaxed">
-              Creemos en el poder de la información. Planea UDG utiliza los
+              Creemos en el poder de la información. Agenda UDG utiliza los
               datos de la oferta académica disponibles públicamente para
               construir una capa visual moderna sobre la infraestructura
               existente del SIIAU.
@@ -181,7 +183,7 @@ export default async function AboutPage() {
                 ¿Es esta una herramienta oficial?
               </h4>
               <p className="text-on-surface-variant font-body leading-relaxed">
-                No. Planea UDG es un proyecto independiente creado por
+                No. Agenda UDG es un proyecto independiente creado por
                 estudiantes y para estudiantes. No tiene vinculación legal,
                 laboral ni administrativa directa con la Universidad de
                 Guadalajara. Es una alternativa estética para la consulta de
@@ -194,7 +196,7 @@ export default async function AboutPage() {
                 ¿Cómo se guardan mis datos?
               </h4>
               <p className="text-on-surface-variant font-body leading-relaxed">
-                Tu privacidad es fundamental. Planea UDG no utiliza bases de
+                Tu privacidad es fundamental. Agenda UDG no utiliza bases de
                 datos externas para guardar tus horarios. Toda la información
                 que selecciones se almacena de forma local en tu navegador
                 (LocalStorage). No requerimos login ni recolectamos información

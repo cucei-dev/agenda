@@ -108,6 +108,9 @@ export function ExportClient({
         <div ref={gridRef} className="overflow-x-auto pb-4">
           <CalendarGrid events={calendarEvents} />
           <Legend items={legendItems} />
+          <span className="font-headline font-extrabold text-primary tracking-tight text-2xl mt-6 block text-center">
+            agenda.cucei.dev
+          </span>
         </div>
       </section>
 

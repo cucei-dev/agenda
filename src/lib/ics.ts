@@ -60,7 +60,7 @@ export function generateICS(secciones: ApiSeccion[]): string {
   const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Planea UDG//Horario//ES",
+    "PRODID:-//Agenda UDG//Horario//ES",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "X-WR-CALNAME:Mi Horario UDG",
