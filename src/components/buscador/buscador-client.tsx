@@ -55,13 +55,16 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
       setError(null);
 
       try {
-        const data = await listSecciones({
-          calendarioId,
-          centroId,
-          materiaId: resolvedMateriaId,
-          skip: currentSkip,
-          limit: PAGE_SIZE,
-        });
+        const data = await listSecciones(
+          {
+            calendarioId,
+            centroId,
+            materiaId: resolvedMateriaId,
+            skip: currentSkip,
+            limit: PAGE_SIZE,
+          },
+          true,
+        );
 
         setTotal(data.total);
         setResults((prev) =>
@@ -98,7 +101,7 @@ export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
           return;
         }
 
-        const materia = await searchMateriasByClave(query.trim());
+        const materia = await searchMateriasByClave(query.trim(), true);
         if (!materia) {
           setNotFound(true);
           setMateriaId(null);

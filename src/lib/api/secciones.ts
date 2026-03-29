@@ -12,6 +12,7 @@ export interface ListSeccionesParams {
 
 export async function listSecciones(
   params: ListSeccionesParams,
+  isClient = false
 ): Promise<ApiPagination<ApiSeccion>> {
   return apiFetch<ApiPagination<ApiSeccion>>(
     "/api/v1/secciones/",
@@ -24,5 +25,6 @@ export async function listSecciones(
       limit: params.limit ?? 20,
     },
     { next: { revalidate: 3600 } },
+    isClient
   );
 }

@@ -1,12 +1,15 @@
-const BASE_URL =
+const BASE_URL = process.env.API_BASE_URL ?? "https://api.cucei.dev";
+
+const CLIENT_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://api.cucei.dev";
 
 export async function apiFetch<T>(
   path: string,
   params?: Record<string, string | number | null | undefined>,
   options?: RequestInit,
+  isClient = false
 ): Promise<T> {
-  const url = new URL(`${BASE_URL}${path}`);
+  const url = new URL(`${isClient ? CLIENT_BASE_URL : BASE_URL}${path}`);
 
   if (params) {
     for (const [key, value] of Object.entries(params)) {
