@@ -1,3 +1,4 @@
+import { MaterialIcon } from "@/components/ui/material-icon";
 import type { Subject } from "@/lib/types";
 import { ScheduleInfo } from "./schedule-info";
 
@@ -34,7 +35,24 @@ export function SubjectDetailCard({
 
       {showDetails && subject.clases.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div></div>
+          <div className="bg-surface-container-low p-5 rounded-xl space-y-3">
+            <div className="flex items-center gap-2 text-primary">
+              <MaterialIcon name="group" className="text-xl" />
+              <span className="font-bold text-sm uppercase tracking-wider">
+                Cupos
+              </span>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center text-sm border-b border-outline-variant/15 pb-2">
+                <span className="text-on-surface-variant">Disponibles</span>
+                <span className="font-semibold">{subject.disponibles}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-on-surface-variant">Total</span>
+                <span className="font-semibold">{subject.cuposTotales}</span>
+              </div>
+            </div>
+          </div>
           <ScheduleInfo horarios={subject.clases} />
         </div>
       )}
