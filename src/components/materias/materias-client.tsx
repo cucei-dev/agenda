@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { listMaterias } from "@/lib/api/materias";
 import type { ApiMateria } from "@/lib/types";
@@ -118,21 +119,26 @@ export function MateriasClient() {
       {!isLoading && results.length > 0 && (
         <ul className="flex flex-col gap-3">
           {results.map((materia) => (
-            <li
-              key={materia.id}
-              className="flex items-center gap-4 bg-surface-container-lowest rounded-2xl px-5 py-4 shadow-[0_2px_8px_rgba(26,28,29,0.04)] hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] transition-shadow"
-            >
-              <span className="shrink-0 font-label text-xs font-semibold tracking-wider bg-secondary-container text-on-secondary-container rounded-lg px-3 py-1.5 min-w-[5rem] text-center">
-                {materia.clave}
-              </span>
-              <div className="flex flex-col min-w-0">
-                <span className="font-headline font-semibold text-on-surface text-sm leading-tight truncate">
-                  {materia.name}
+            <li key={materia.id}>
+              <Link
+                href={`/?clave=${encodeURIComponent(materia.clave)}`}
+                className="flex items-center gap-4 bg-surface-container-lowest rounded-2xl px-5 py-4 shadow-[0_2px_8px_rgba(26,28,29,0.04)] hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] hover:translate-y-[-2px] transition-all block"
+              >
+                <span className="shrink-0 font-label text-xs font-semibold tracking-wider bg-secondary-container text-on-secondary-container rounded-lg px-3 py-1.5 min-w-[5rem] text-center">
+                  {materia.clave}
                 </span>
-                <span className="font-body text-xs text-on-surface-variant mt-0.5">
-                  {materia.creditos} crédito{materia.creditos !== 1 ? "s" : ""}
+                <div className="flex flex-col min-w-0 flex-1">
+                  <span className="font-headline font-semibold text-on-surface text-sm leading-tight truncate">
+                    {materia.name}
+                  </span>
+                  <span className="font-body text-xs text-on-surface-variant mt-0.5">
+                    {materia.creditos} crédito{materia.creditos !== 1 ? "s" : ""}
+                  </span>
+                </div>
+                <span className="material-symbols-outlined text-base text-on-surface-variant shrink-0">
+                  arrow_forward
                 </span>
-              </div>
+              </Link>
             </li>
           ))}
         </ul>

@@ -18,14 +18,15 @@ import { StatsSidebar } from "./stats-sidebar";
 interface BuscadorClientProps {
   calendarioId: number;
   centros: ApiCentro[];
+  initialQuery?: string;
 }
 
 const PAGE_SIZE = 20;
 
-export function BuscadorClient({ calendarioId, centros }: BuscadorClientProps) {
+export function BuscadorClient({ calendarioId, centros, initialQuery = "" }: BuscadorClientProps) {
   const router = useRouter();
   const { addSection, isInSchedule } = useScheduleStore();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [selectedCentroId, setSelectedCentroId] = useState<number | null>(null);
   const [results, setResults] = useState<ApiSeccion[]>([]);
   const [total, setTotal] = useState(0);

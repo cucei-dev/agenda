@@ -6,10 +6,15 @@ import {
   listCentros,
 } from "@/lib/api";
 
-export default async function Home() {
-  const [allCalendarios, centros] = await Promise.all([
+interface HomeProps {
+  searchParams: Promise<{ clave?: string }>;
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+  const [allCalendarios, centros, { clave }] = await Promise.all([
     listCalendarios(),
     listCentros(),
+    searchParams,
   ]);
 
   const calendario = getMostRecentCalendario(allCalendarios);
@@ -27,7 +32,11 @@ export default async function Home() {
   return (
     <main className="max-w-7xl mx-auto px-6 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <BuscadorClient calendarioId={calendario.id} centros={centros} />
+        <BuscadorClient
+          calendarioId={calendario.id}
+          centros={centros}
+          initialQuery={clave ?? ""}
+        />
       </div>
     </main>
   );
