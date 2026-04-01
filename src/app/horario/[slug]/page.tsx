@@ -1,6 +1,12 @@
 import { ExportClient } from "@/components/horario/export-client";
 import type { ApiSeccion, Subject } from "@/lib/types";
 import { listSecciones, seccionToSubject } from "@/lib/api";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Resumen de Horario",
+  description: "Revisa la estructura final de tu ciclo académico antes de exportar.",
+};
 
 export default async function HorarioSlugPage({
   params,

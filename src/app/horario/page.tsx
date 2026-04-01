@@ -1,4 +1,10 @@
 import { HorarioClient } from "@/components/horario/horario-client";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Horario",
+  description: "Visualización de tu carga académica para el ciclo actual.",
+};
 
 export default function HorarioPage() {
   return (

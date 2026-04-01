@@ -5,6 +5,12 @@ import {
   getMostRecentCalendario,
 } from "@/lib/api/calendarios";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Acerca de",
+  description: "Información sobre la iniciativa Agenda UDG y su misión.",
+};
 
 export default async function AboutPage() {
   const allCalendarios = await listCalendarios();
