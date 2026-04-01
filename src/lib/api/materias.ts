@@ -11,3 +11,19 @@ export async function searchMateriasByClave(
   }, undefined, isClient);
   return data.results[0] ?? null;
 }
+
+export async function listMaterias(
+  params: { search?: string; skip?: number; limit?: number },
+  isClient = false
+): Promise<ApiPagination<ApiMateria>> {
+  return apiFetch<ApiPagination<ApiMateria>>(
+    "/api/v1/materias/",
+    {
+      search: params.search,
+      skip: params.skip ?? 0,
+      limit: params.limit ?? 20,
+    },
+    undefined,
+    isClient
+  );
+}

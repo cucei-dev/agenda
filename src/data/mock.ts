@@ -9,6 +9,7 @@ import type {
 
 export const navItems: NavItem[] = [
   { label: "Buscador", href: "/", icon: "search" },
+  { label: "Materias", href: "/materias", icon: "menu_book" },
   { label: "Mi Horario", href: "/horario", icon: "calendar_today" },
   { label: "Acerca de", href: "/about", icon: "info" },
 ];
