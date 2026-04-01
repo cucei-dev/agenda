@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SearchInput } from "@/components/ui/search-input";
 import { FilterChip } from "@/components/ui/filter-chip";
 import type { ApiCentro } from "@/lib/types";
@@ -26,7 +27,13 @@ export function HeroSection({
         Encuentra tu próximo <span className="text-primary">desafío</span>.
       </h1>
       <SearchInput value={query} onChange={onQueryChange} disabled={loading} />
-      <div className="mt-8 flex flex-wrap gap-3">
+      <p className="mt-3 font-body text-sm text-on-surface-variant">
+        ¿No sabes la clave de tu materia?{" "}
+        <Link href="/materias" className="text-primary font-semibold hover:underline">
+          Búscala aquí
+        </Link>
+      </p>
+      <div className="mt-6 flex flex-wrap gap-3">
         <span className="font-label text-label-sm uppercase tracking-widest font-semibold flex items-center text-on-surface-variant mr-2">
           Centros:
         </span>
