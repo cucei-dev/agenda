@@ -3,6 +3,7 @@ import { Manrope, Inter } from "next/font/google";
 import { TopNavBar } from "@/components/layout/top-nav-bar";
 import { BottomNavBar } from "@/components/layout/bottom-nav-bar";
 import { Footer } from "@/components/layout/footer";
+import { PwaInstallBanner } from "@/components/layout/pwa-install-banner";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -112,6 +113,7 @@ export default function RootLayout({
         <div className="flex-1">{children}</div>
         <Footer />
         <BottomNavBar />
+        <PwaInstallBanner />
         <script>
           {`
             if (typeof navigator.serviceWorker !== "undefined") {

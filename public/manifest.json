@@ -1,7 +1,7 @@
 {
   "name": "Agenda CUCEI.DEV",
   "short_name": "Agenda UDG",
-  "start_url": "https://agenda.cucei.dev",
+  "start_url": "/?pwa=1",
   "display": "standalone",
   "description": "Buscador de materias y horarios académicos - Universidad de Guadalajara",
   "lang": "es",
