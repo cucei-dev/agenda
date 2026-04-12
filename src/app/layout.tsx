@@ -16,10 +16,67 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const BASE_URL = "https://agenda.cucei.dev";
+
 export const metadata: Metadata = {
-  title: "Agenda UDG",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "Agenda UDG",
+    template: "%s | Agenda UDG",
+  },
   description:
-    "Buscador de materias y horarios académicos - Universidad de Guadalajara",
+    "Consulta materias, claves y arma tu horario académico de la Universidad de Guadalajara (UDG) de forma fácil y visual. Basado en datos públicos de SIIAU.",
+  keywords: [
+    "UDG",
+    "Universidad de Guadalajara",
+    "CUCEI",
+    "SIIAU",
+    "horario académico",
+    "materias UDG",
+    "oferta académica",
+    "agenda universitaria",
+    "buscador de materias",
+  ],
+  authors: [{ name: "CUCEI.dev", url: "https://cucei.dev" }],
+  creator: "CUCEI.dev",
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    url: BASE_URL,
+    siteName: "Agenda UDG",
+    title: "Agenda UDG – Buscador de materias y horarios",
+    description:
+      "Consulta materias, claves y arma tu horario académico de la UDG de forma fácil y visual.",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Agenda UDG – Buscador de materias y horarios académicos",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Agenda UDG – Buscador de materias y horarios",
+    description:
+      "Consulta materias, claves y arma tu horario académico de la UDG de forma fácil y visual.",
+    images: ["/images/og-image.png"],
+    creator: "@cuceidev",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: BASE_URL,
+  },
 };
 
 export default function RootLayout({

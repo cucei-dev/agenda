@@ -9,7 +9,17 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Acerca de",
-  description: "Información sobre la iniciativa Agenda UDG y su misión.",
+  description:
+    "Conoce la iniciativa independiente Agenda UDG: su misión, transparencia de datos y preguntas frecuentes. Creada por estudiantes para simplificar la consulta de la oferta académica del SIIAU.",
+  alternates: {
+    canonical: "https://agenda.cucei.dev/about",
+  },
+  openGraph: {
+    title: "Acerca de Agenda UDG",
+    description:
+      "Conoce la misión y transparencia de Agenda UDG, la herramienta independiente para consultar la oferta académica de la UDG.",
+    url: "https://agenda.cucei.dev/about",
+  },
 };
 
 export default async function AboutPage() {

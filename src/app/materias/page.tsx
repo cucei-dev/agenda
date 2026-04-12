@@ -2,8 +2,18 @@ import type { Metadata } from "next";
 import { MateriasClient } from "@/components/materias/materias-client";
 
 export const metadata: Metadata = {
-  title: "Materias",
-  description: "Consulta el catálogo de materias y sus claves.",
+  title: "Catálogo de Materias",
+  description:
+    "Explora el catálogo completo de materias de la Universidad de Guadalajara. Encuentra claves, nombres y detalles de cada asignatura disponible en SIIAU.",
+  alternates: {
+    canonical: "https://agenda.cucei.dev/materias",
+  },
+  openGraph: {
+    title: "Catálogo de Materias – Agenda UDG",
+    description:
+      "Explora el catálogo completo de materias de la UDG y encuentra su clave para inscribirte.",
+    url: "https://agenda.cucei.dev/materias",
+  },
 };
 
 export default function MateriasPage() {

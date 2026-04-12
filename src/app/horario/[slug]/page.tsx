@@ -6,6 +6,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Resumen de Horario",
   description: "Revisa la estructura final de tu ciclo académico antes de exportar.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function HorarioSlugPage({
