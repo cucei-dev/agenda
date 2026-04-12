@@ -50,8 +50,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/images/og-image.png",
-        width: 1200,
-        height: 630,
+        width: 402,
+        height: 874,
         alt: "Agenda UDG – Buscador de materias y horarios académicos",
       },
     ],
