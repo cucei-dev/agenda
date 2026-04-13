@@ -24,7 +24,7 @@ export async function listSecciones(
       skip: params.skip ?? 0,
       limit: params.limit ?? 20,
     },
-    { next: { revalidate: 3600 } },
+    { cache: 'no-store' },
     isClient
   );
 }
