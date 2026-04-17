@@ -133,6 +133,18 @@ function getNextColorIndex(entries: ScheduleEntry[]): number {
   return (Math.max(...entries.map((e) => e.colorIndex)) + 1) % 8;
 }
 
+function replaceSections(secciones: ApiSeccion[]) {
+  const uniqueSections = Array.from(
+    new Map(secciones.map((seccion) => [seccion.nrc, seccion])).values(),
+  );
+  writeToStorage(
+    uniqueSections.map((seccion, index) => ({
+      seccion,
+      colorIndex: index % 8,
+    })),
+  );
+}
+
 export type AddResult =
   | { ok: true }
   | { ok: false; conflict: ConflictInfo }
@@ -191,6 +203,10 @@ export function useScheduleStore() {
     ),
     removeSection: useCallback((nrc: string) => removeSection(nrc), []),
     clearAll: useCallback(() => clearAll(), []),
+    replaceSections: useCallback(
+      (secciones: ApiSeccion[]) => replaceSections(secciones),
+      [],
+    ),
     isInSchedule: useCallback((nrc: string) => isInSchedule(nrc), []),
   };
 }

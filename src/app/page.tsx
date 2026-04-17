@@ -1,10 +1,8 @@
 import { BuscadorClient } from "@/components/buscador/buscador-client";
-import { StatsSidebar } from "@/components/buscador/stats-sidebar";
 import {
-  listCalendarios,
-  getMostRecentCalendario,
   listCentros,
 } from "@/lib/api";
+import { getSelectedCalendarioState } from "@/lib/calendario-selection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -47,13 +45,13 @@ interface HomeProps {
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  const [allCalendarios, centros, { clave }] = await Promise.all([
-    listCalendarios(),
+  const [{ selectedCalendario }, centros, { clave }] = await Promise.all([
+    getSelectedCalendarioState(),
     listCentros(),
     searchParams,
   ]);
 
-  const calendario = getMostRecentCalendario(allCalendarios);
+  const calendario = selectedCalendario;
 
   if (!calendario) {
     return (

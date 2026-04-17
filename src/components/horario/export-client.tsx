@@ -1,10 +1,13 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import type { ApiSeccion, Subject, DayOfWeek } from "@/lib/types";
 import { getScheduleColor } from "@/lib/schedule-colors";
 import { getDiaDisplayName, formatHora } from "@/lib/diaMap";
 import { downloadICS } from "@/lib/ics";
+import { useScheduleStore } from "@/lib/schedule-store";
+import { MaterialIcon } from "@/components/ui/material-icon";
 import { CalendarGrid } from "./calendar-grid";
 import type { ScheduleCalendarEvent } from "./calendar-event";
 import { Legend } from "./legend";
@@ -15,14 +18,19 @@ interface ExportClientProps {
   subjects: Subject[];
   secciones: ApiSeccion[];
   totalCreditos: number;
+  missingSectionsCount?: number;
 }
 
 export function ExportClient({
   subjects,
   secciones,
   totalCreditos,
+  missingSectionsCount = 0,
 }: ExportClientProps) {
+  const router = useRouter();
   const gridRef = useRef<HTMLDivElement>(null);
+  const { replaceSections } = useScheduleStore();
+  const [isImporting, startImportTransition] = useTransition();
 
   // Build calendar events from raw API sections (same logic as HorarioClient)
   const calendarEvents: (ScheduleCalendarEvent & { dia: DayOfWeek })[] = [];
@@ -98,8 +106,28 @@ export function ExportClient({
     downloadICS(secciones);
   }, [secciones]);
 
+  const handleImportSchedule = useCallback(() => {
+    startImportTransition(() => {
+      replaceSections(secciones);
+      router.push("/horario");
+    });
+  }, [replaceSections, router, secciones]);
+
   return (
     <>
+      {missingSectionsCount > 0 && (
+        <div className="mb-8 rounded-2xl border border-tertiary/20 bg-tertiary-container px-5 py-4 text-sm text-on-tertiary-container">
+          <div className="flex items-start gap-3">
+            <MaterialIcon name="info" className="mt-0.5" />
+            <p>
+              {missingSectionsCount}{" "}
+              {missingSectionsCount === 1 ? "materia no existe" : "materias no existen"}{" "}
+              en el calendario activo y no se incluirán al cargar este horario.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Calendar grid preview */}
       <section className="mb-12">
         <h2 className="font-headline text-3xl font-bold tracking-tight text-on-surface mb-6">
@@ -123,8 +151,11 @@ export function ExportClient({
         </div>
         <SummaryPanel
           totalCreditos={totalCreditos}
+          onImportSchedule={handleImportSchedule}
           onDownloadPDF={handleDownloadPDF}
           onExportCalendar={handleExportCalendar}
+          importDisabled={secciones.length === 0 || isImporting}
+          importLabel={isImporting ? "Cargando..." : "Cargar en Mi Horario"}
         />
       </div>
     </>

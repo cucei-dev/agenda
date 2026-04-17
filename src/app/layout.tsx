@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Manrope, Inter } from "next/font/google";
+import Script from "next/script";
 import { TopNavBar } from "@/components/layout/top-nav-bar";
 import { BottomNavBar } from "@/components/layout/bottom-nav-bar";
 import { Footer } from "@/components/layout/footer";
 import { PwaInstallBanner } from "@/components/layout/pwa-install-banner";
+import { getSelectedCalendarioState } from "@/lib/calendario-selection";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -79,11 +81,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { calendarios, selectedCalendario } = await getSelectedCalendarioState();
+
   return (
     <html lang="es" className={`${manrope.variable} ${inter.variable} light`}>
       <head>
@@ -166,18 +170,21 @@ export default function RootLayout({
         <meta name="theme-color" content="#78161e" />
       </head>
       <body className="bg-surface text-on-surface font-body antialiased min-h-full flex flex-col">
-        <TopNavBar />
+        <TopNavBar
+          calendarios={calendarios}
+          selectedCalendarioId={selectedCalendario?.id ?? null}
+        />
         <div className="flex-1">{children}</div>
         <Footer />
         <BottomNavBar />
         <PwaInstallBanner />
-        <script>
+        <Script id="service-worker-registration" strategy="afterInteractive">
           {`
             if (typeof navigator.serviceWorker !== "undefined") {
               navigator.serviceWorker.register("/service-worker.js");
             }
           `}
-        </script>
+        </Script>
       </body>
     </html>
   );

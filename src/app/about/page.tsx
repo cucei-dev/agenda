@@ -1,9 +1,6 @@
 import { MaterialIcon } from "@/components/ui/material-icon";
 import Link from "next/dist/client/link";
-import {
-  listCalendarios,
-  getMostRecentCalendario,
-} from "@/lib/api/calendarios";
+import { getSelectedCalendarioState } from "@/lib/calendario-selection";
 import Image from "next/image";
 import type { Metadata } from "next";
 
@@ -23,9 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const allCalendarios = await listCalendarios();
-
-  const calendario = getMostRecentCalendario(allCalendarios);
+  const { selectedCalendario: calendario } = await getSelectedCalendarioState();
 
   return (
     <main className="max-w-7xl mx-auto px-6 py-12">

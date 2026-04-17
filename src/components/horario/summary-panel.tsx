@@ -3,14 +3,20 @@ import Image from "next/image";
 
 interface SummaryPanelProps {
   totalCreditos: number;
+  onImportSchedule?: () => void;
   onDownloadPDF?: () => void;
   onExportCalendar?: () => void;
+  importDisabled?: boolean;
+  importLabel?: string;
 }
 
 export function SummaryPanel({
   totalCreditos,
+  onImportSchedule,
   onDownloadPDF,
   onExportCalendar,
+  importDisabled = false,
+  importLabel = "Cargar en Mi Horario",
 }: SummaryPanelProps) {
   return (
     <aside className="lg:col-span-4 sticky top-28 space-y-6">
@@ -32,6 +38,16 @@ export function SummaryPanel({
         </div>
 
         <div className="space-y-3 pt-4 border-t border-outline-variant/30">
+          {onImportSchedule && (
+            <button
+              onClick={onImportSchedule}
+              disabled={importDisabled}
+              className="w-full bg-gradient-to-br from-secondary to-secondary-container text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg shadow-secondary/10 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <MaterialIcon name="upload" />
+              {importLabel}
+            </button>
+          )}
           <button
             onClick={onDownloadPDF}
             className="w-full bg-gradient-to-br from-primary to-primary-container text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg shadow-primary/10 cursor-pointer"
@@ -41,7 +57,7 @@ export function SummaryPanel({
           </button>
           <button
             onClick={onExportCalendar}
-            className="w-full bg-white border border-outline-variant/20 text-secondary py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-surface-container-lowest active:scale-95 shadow-sm cursor-pointer"
+            className="w-full bg-white border border-outline-variant/20 text-secondary py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-surface-container-lowest active:scale-95 shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
           >
             <MaterialIcon name="calendar_add_on" />
             Exportar Calendario
