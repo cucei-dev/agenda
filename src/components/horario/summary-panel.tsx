@@ -57,6 +57,7 @@ export function SummaryPanel({
           </button>
           <button
             onClick={onExportCalendar}
+            disabled={!onExportCalendar}
             className="w-full bg-white border border-outline-variant/20 text-secondary py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-surface-container-lowest active:scale-95 shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
           >
             <MaterialIcon name="calendar_add_on" />

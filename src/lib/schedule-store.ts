@@ -137,12 +137,14 @@ function replaceSections(secciones: ApiSeccion[]) {
   const uniqueSections = Array.from(
     new Map(secciones.map((seccion) => [seccion.nrc, seccion])).values(),
   );
-  writeToStorage(
-    uniqueSections.map((seccion, index) => ({
+  const entries = uniqueSections.reduce<ScheduleEntry[]>((acc, seccion) => {
+    acc.push({
       seccion,
-      colorIndex: index % 8,
-    })),
-  );
+      colorIndex: getNextColorIndex(acc),
+    });
+    return acc;
+  }, []);
+  writeToStorage(entries);
 }
 
 export type AddResult =
