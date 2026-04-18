@@ -1,6 +1,6 @@
 import { ExportClient } from "@/components/horario/export-client";
-import type { ApiSeccion, Subject } from "@/lib/types";
-import { listSecciones, seccionToSubject } from "@/lib/api";
+import type { ApiAula, ApiSeccion, Subject } from "@/lib/types";
+import { getAulaById, listSecciones, seccionToSubject } from "@/lib/api";
 import { getSelectedCalendarioState } from "@/lib/calendario-selection";
 import type { Metadata } from "next";
 
@@ -50,8 +50,28 @@ export default async function HorarioSlugPage({
   });
   const missingSectionsCount = nrcs.length - secciones.length;
 
+  const aulaIds = Array.from(
+    new Set(
+      secciones.flatMap((seccion) =>
+        seccion.clases.flatMap((clase) =>
+          clase.aula_id === null ? [] : [clase.aula_id],
+        ),
+      ),
+    ),
+  );
+
+  const aulasById: Record<number, ApiAula> = Object.fromEntries(
+    (
+      await Promise.allSettled(
+        aulaIds.map(async (aulaId) => [aulaId, await getAulaById(aulaId)] as const),
+      )
+    ).flatMap((result) =>
+      result.status === "fulfilled" ? [result.value] : [],
+    ),
+  );
+
   const subjects: Subject[] = secciones.map((seccion) =>
-    seccionToSubject(seccion),
+    seccionToSubject(seccion, aulasById),
   );
   const totalCreditos = subjects.reduce((sum, subj) => sum + subj.creditos, 0);
 

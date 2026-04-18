@@ -18,10 +18,22 @@ export function ScheduleInfo({ horarios }: ScheduleInfoProps) {
         {horarios.map((h) => (
           <div
             key={`${h.dia}-${h.horaInicio}-${h.horaFin}`}
-            className="flex justify-between items-center text-sm border-b border-outline-variant/15 pb-2 last:border-b-0"
+            className="border-b border-outline-variant/15 pb-2 last:border-b-0"
           >
-            <span className="text-on-surface-variant">{h.dia}</span>
-            <span className="font-semibold">{`${h.horaInicio} - ${h.horaFin}`}</span>
+            <div className="flex items-center justify-between gap-4 text-sm">
+              <span className="text-on-surface-variant">{h.dia}</span>
+              <span className="font-semibold">{`${h.horaInicio} - ${h.horaFin}`}</span>
+            </div>
+            <div className="mt-1 flex items-center gap-2 text-xs text-on-surface-variant">
+              <MaterialIcon name="location_on" className="text-base text-secondary" />
+              <span>
+                {h.aula
+                  ? h.edificio
+                    ? `${h.aula} · ${h.edificio}`
+                    : h.aula
+                  : "Aula por confirmar"}
+              </span>
+            </div>
           </div>
         ))}
       </div>

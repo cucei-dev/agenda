@@ -1,4 +1,5 @@
 export { apiFetch } from "./client";
+export { getAulaById } from "./aulas";
 export { listCalendarios, getMostRecentCalendario } from "./calendarios";
 export { listCentros } from "./centros";
 export { listSecciones } from "./secciones";

@@ -6,6 +6,8 @@ export interface SubjectClase {
   dia: string;
   horaInicio: string;
   horaFin: string;
+  aula: string | null;
+  edificio: string | null;
 }
 
 export interface Subject {
@@ -97,6 +99,12 @@ export interface ApiCentro {
   siiau_id: string;
 }
 
+export interface ApiEdificio {
+  id: number;
+  name: string;
+  centro_id: number;
+}
+
 export interface ApiMateria {
   id: number;
   name: string;
@@ -107,6 +115,14 @@ export interface ApiMateria {
 export interface ApiProfesor {
   id: number;
   name: string;
+}
+
+export interface ApiAula {
+  id: number;
+  name: string;
+  edificio_id: number;
+  edificio: ApiEdificio | null;
+  clases: ApiClase[];
 }
 
 export interface ApiClase {
@@ -137,4 +153,3 @@ export interface ApiSeccion {
   calendario: ApiCalendario;
   clases: ApiClase[];
 }
-
