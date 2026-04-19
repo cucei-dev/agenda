@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback, useTransition } from "react";
+import { useRef, useCallback, useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { ApiSeccion, Subject, DayOfWeek } from "@/lib/types";
 import { getScheduleColor } from "@/lib/schedule-colors";
@@ -26,11 +26,12 @@ export function ExportClient({
   secciones,
   totalCreditos,
   missingSectionsCount = 0,
-}: ExportClientProps) {
+}: Readonly<ExportClientProps>) {
   const router = useRouter();
   const gridRef = useRef<HTMLDivElement>(null);
   const { replaceSections } = useScheduleStore();
   const [isImporting, startImportTransition] = useTransition();
+  const [copyLinkLabel, setCopyLinkLabel] = useState("Copiar enlace");
 
   // Build calendar events from raw API sections (same logic as HorarioClient)
   const calendarEvents: (ScheduleCalendarEvent & { dia: DayOfWeek })[] = [];
@@ -113,6 +114,17 @@ export function ExportClient({
     });
   }, [replaceSections, router, secciones]);
 
+  const handleCopyLink = useCallback(async () => {
+    try {
+      await globalThis.navigator.clipboard.writeText(globalThis.location.href);
+      setCopyLinkLabel("Enlace copiado");
+      globalThis.setTimeout(() => setCopyLinkLabel("Copiar enlace"), 2200);
+    } catch {
+      setCopyLinkLabel("No se pudo copiar");
+      globalThis.setTimeout(() => setCopyLinkLabel("Copiar enlace"), 2200);
+    }
+  }, []);
+
   return (
     <>
       {missingSectionsCount > 0 && (
@@ -154,6 +166,8 @@ export function ExportClient({
           onImportSchedule={handleImportSchedule}
           onDownloadPDF={handleDownloadPDF}
           onExportCalendar={handleExportCalendar}
+          onCopyLink={handleCopyLink}
+          copyLinkLabel={copyLinkLabel}
           importDisabled={secciones.length === 0 || isImporting}
           importLabel={isImporting ? "Cargando..." : "Cargar en Mi Horario"}
         />

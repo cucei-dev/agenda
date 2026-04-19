@@ -6,6 +6,8 @@ interface SummaryPanelProps {
   onImportSchedule?: () => void;
   onDownloadPDF?: () => void;
   onExportCalendar?: () => void;
+  onCopyLink?: () => void;
+  copyLinkLabel?: string;
   importDisabled?: boolean;
   importLabel?: string;
 }
@@ -15,9 +17,11 @@ export function SummaryPanel({
   onImportSchedule,
   onDownloadPDF,
   onExportCalendar,
+  onCopyLink,
+  copyLinkLabel = "Copiar enlace",
   importDisabled = false,
   importLabel = "Cargar en Mi Horario",
-}: SummaryPanelProps) {
+}: Readonly<SummaryPanelProps>) {
   return (
     <aside className="lg:col-span-4 sticky top-28 space-y-6">
       <div className="bg-surface-container-high rounded-2xl p-8 space-y-8 overflow-hidden relative">
@@ -42,7 +46,7 @@ export function SummaryPanel({
             <button
               onClick={onImportSchedule}
               disabled={importDisabled}
-              className="w-full bg-gradient-to-br from-secondary to-secondary-container text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg shadow-secondary/10 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full bg-linear-to-br from-secondary to-secondary-container text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg shadow-secondary/10 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
             >
               <MaterialIcon name="upload" />
               {importLabel}
@@ -50,7 +54,7 @@ export function SummaryPanel({
           )}
           <button
             onClick={onDownloadPDF}
-            className="w-full bg-gradient-to-br from-primary to-primary-container text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg shadow-primary/10 cursor-pointer"
+            className="w-full bg-linear-to-br from-primary to-primary-container text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg shadow-primary/10 cursor-pointer"
           >
             <MaterialIcon name="picture_as_pdf" />
             Descargar PDF
@@ -62,6 +66,14 @@ export function SummaryPanel({
           >
             <MaterialIcon name="calendar_add_on" />
             Exportar Calendario
+          </button>
+          <button
+            onClick={onCopyLink}
+            disabled={!onCopyLink}
+            className="w-full bg-white border border-outline-variant/20 text-secondary py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-surface-container-lowest active:scale-95 shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <MaterialIcon name="link" />
+            {copyLinkLabel}
           </button>
         </div>
       </div>
