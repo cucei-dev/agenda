@@ -27,6 +27,7 @@ export function SearchInput({
         value={value}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
         disabled={disabled}
+        aria-label="Buscar materias por clave"
       />
     </div>
   );

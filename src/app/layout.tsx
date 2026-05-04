@@ -170,11 +170,17 @@ export default async function RootLayout({
         <meta name="theme-color" content="#78161e" />
       </head>
       <body className="bg-surface text-on-surface font-body antialiased min-h-full flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:text-primary focus:p-4 focus:rounded-xl focus:shadow-lg focus:ring-2 focus:ring-primary"
+        >
+          Saltar al contenido principal
+        </a>
         <TopNavBar
           calendarios={calendarios}
           selectedCalendarioId={selectedCalendario?.id ?? null}
         />
-        <div className="flex-1">{children}</div>
+        <main id="main-content" className="flex-1">{children}</main>
         <Footer />
         <BottomNavBar />
         <PwaInstallBanner />

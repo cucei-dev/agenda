@@ -171,7 +171,7 @@ export function BuscadorClient({ calendarioId, centros, initialQuery = "" }: Bus
         />
 
         {error && (
-          <div className="mb-8 p-4 rounded-xl bg-error-container text-on-error-container font-medium flex items-center gap-3">
+          <div role="alert" className="mb-8 p-4 rounded-xl bg-error-container text-on-error-container font-medium flex items-center gap-3">
             <MaterialIcon name="error" />
             {error}
           </div>

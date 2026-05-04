@@ -128,7 +128,7 @@ export function ExportClient({
   return (
     <>
       {missingSectionsCount > 0 && (
-        <div className="mb-8 rounded-2xl border border-tertiary/20 bg-tertiary-container px-5 py-4 text-sm text-on-tertiary-container">
+        <div role="alert" className="mb-8 rounded-2xl border border-tertiary/20 bg-tertiary-container px-5 py-4 text-sm text-on-tertiary-container">
           <div className="flex items-start gap-3">
             <MaterialIcon name="info" className="mt-0.5" />
             <p>
