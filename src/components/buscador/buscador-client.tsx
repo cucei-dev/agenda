@@ -215,36 +215,33 @@ export function BuscadorClient({ calendarioId, centros, initialQuery = "" }: Bus
           </div>
         ) : (
           <div className="space-y-6">
-            {results.map((seccion) => (
-              <>
-                {/* Toast notification */}
-                {toast && toast.id === seccion.id && (
-                  <div
-                    className={`mb-6 p-4 rounded-xl font-medium flex items-center gap-3 animate-[fadeIn_0.2s_ease-out] ${
-                      toast.type === "error"
-                        ? "bg-error-container text-on-error-container"
-                        : "bg-tertiary-container text-on-tertiary-container"
-                    }`}
-                  >
-                    <MaterialIcon
-                      name={toast.type === "error" ? "warning" : "check_circle"}
-                    />
-                    <span className="text-sm">{toast.message}</span>
-                    <button
-                      onClick={() => setToast(null)}
-                      className="ml-auto opacity-60 hover:opacity-100"
-                    >
-                      <MaterialIcon name="close" className="text-base" />
-                    </button>
-                  </div>
-                )}
-                <SubjectCard
-                  key={seccion.id}
-                  subject={seccionToSubject(seccion)}
-                  onAddToSchedule={() => handleAddToSchedule(seccion)}
-                  isInSchedule={isInSchedule(seccion.nrc)}
+            {toast && (
+              <div
+                className={`mb-6 p-4 rounded-xl font-medium flex items-center gap-3 animate-[fadeIn_0.2s_ease-out] ${
+                  toast.type === "error"
+                    ? "bg-error-container text-on-error-container"
+                    : "bg-tertiary-container text-on-tertiary-container"
+                }`}
+              >
+                <MaterialIcon
+                  name={toast.type === "error" ? "warning" : "check_circle"}
                 />
-              </>
+                <span className="text-sm">{toast.message}</span>
+                <button
+                  onClick={() => setToast(null)}
+                  className="ml-auto opacity-60 hover:opacity-100"
+                >
+                  <MaterialIcon name="close" className="text-base" />
+                </button>
+              </div>
+            )}
+            {results.map((seccion) => (
+              <SubjectCard
+                key={seccion.id}
+                subject={seccionToSubject(seccion)}
+                onAddToSchedule={() => handleAddToSchedule(seccion)}
+                isInSchedule={isInSchedule(seccion.nrc)}
+              />
             ))}
 
             {hasMore && (

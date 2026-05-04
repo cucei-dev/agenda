@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { Subject } from "@/lib/types";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { MaterialIcon } from "@/components/ui/material-icon";
@@ -35,7 +36,7 @@ interface SubjectCardProps {
   isInSchedule?: boolean;
 }
 
-export function SubjectCard({
+export const SubjectCard = memo(function SubjectCard({
   subject,
   onAddToSchedule,
   isInSchedule,
@@ -123,4 +124,4 @@ export function SubjectCard({
       </div>
     </article>
   );
-}
+});

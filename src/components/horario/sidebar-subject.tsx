@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { MaterialIcon } from "@/components/ui/material-icon";
 import type { ScheduleColorScheme } from "@/lib/types";
 
@@ -10,7 +11,7 @@ interface SidebarSubjectProps {
   onRemove?: () => void;
 }
 
-export function SidebarSubject({
+export const SidebarSubject = memo(function SidebarSubject({
   nombre,
   nrc,
   creditos,
@@ -54,4 +55,4 @@ export function SidebarSubject({
       </div>
     </div>
   );
-}
+});

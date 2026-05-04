@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { MaterialIcon } from "@/components/ui/material-icon";
 import type { ScheduleColorScheme } from "@/lib/types";
 
@@ -14,7 +15,7 @@ interface CalendarEventProps {
   slotMinutes: number;
 }
 
-export function CalendarEvent({ event, slotMinutes }: CalendarEventProps) {
+export const CalendarEvent = memo(function CalendarEvent({ event, slotMinutes }: CalendarEventProps) {
   const [startH, startM] = event.horaInicio.split(":").map(Number);
   const [endH, endM] = event.horaFin.split(":").map(Number);
   const durationMin = endH * 60 + endM - (startH * 60 + startM);
@@ -42,4 +43,4 @@ export function CalendarEvent({ event, slotMinutes }: CalendarEventProps) {
       </div>
     </div>
   );
-}
+});
