@@ -1,5 +1,5 @@
 import { MaterialIcon } from "@/components/ui/material-icon";
-import Link from "next/dist/client/link";
+import Link from "next/link";
 import { getSelectedCalendarioState } from "@/lib/calendario-selection";
 import Image from "next/image";
 import type { Metadata } from "next";
