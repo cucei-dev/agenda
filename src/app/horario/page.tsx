@@ -2,16 +2,16 @@ import { HorarioClient } from "@/components/horario/horario-client";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Mi Horario",
+  title: "Mi Horario Semanal — Organiza tu carga académica",
   description:
     "Visualiza y organiza tu carga académica semanal para el ciclo actual de la UDG. Agrega materias y exporta tu horario fácilmente.",
   alternates: {
     canonical: "https://agenda.cucei.dev/horario",
   },
   openGraph: {
-    title: "Mi Horario – Agenda UDG",
+    title: "Mi Horario Semanal — Organiza tu carga académica | Agenda UDG",
     description:
-      "Visualiza y organiza tu carga académica semanal para el ciclo actual de la UDG.",
+      "Visualiza y organiza tu carga académica semanal para el ciclo actual de la UDG. Agrega materias y exporta tu horario fácilmente.",
     url: "https://agenda.cucei.dev/horario",
   },
 };

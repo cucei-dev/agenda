@@ -5,6 +5,7 @@ import { TopNavBar } from "@/components/layout/top-nav-bar";
 import { BottomNavBar } from "@/components/layout/bottom-nav-bar";
 import { Footer } from "@/components/layout/footer";
 import { PwaInstallBanner } from "@/components/layout/pwa-install-banner";
+import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-jsonld";
 import { getSelectedCalendarioState } from "@/lib/calendario-selection";
 import "./globals.css";
 
@@ -213,6 +214,7 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-surface text-on-surface font-body antialiased min-h-full flex flex-col">
+        <BreadcrumbJsonLd />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:text-primary focus:p-4 focus:rounded-xl focus:shadow-lg focus:ring-2 focus:ring-primary"

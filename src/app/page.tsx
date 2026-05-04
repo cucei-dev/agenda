@@ -6,7 +6,7 @@ import { getSelectedCalendarioState } from "@/lib/calendario-selection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Buscador de Materias",
+  title: "Buscador de Materias UDG — Claves, horarios y secciones",
   description:
     "Busca materias por clave o nombre, filtra por centro universitario y arma tu horario académico de la UDG. Basado en datos públicos de SIIAU.",
   alternates: {

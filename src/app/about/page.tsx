@@ -5,16 +5,16 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Acerca de",
+  title: "Acerca de Agenda UDG — Proyecto, FAQ y Transparencia",
   description:
     "Conoce la iniciativa independiente Agenda UDG: su misión, transparencia de datos y preguntas frecuentes. Creada por estudiantes para simplificar la consulta de la oferta académica del SIIAU.",
   alternates: {
     canonical: "https://agenda.cucei.dev/about",
   },
   openGraph: {
-    title: "Acerca de Agenda UDG",
+    title: "Acerca de Agenda UDG — Proyecto, FAQ y Transparencia | Agenda UDG",
     description:
-      "Conoce la misión y transparencia de Agenda UDG, la herramienta independiente para consultar la oferta académica de la UDG.",
+      "Conoce la misión y transparencia de Agenda UDG, la herramienta independiente para consultar la oferta académica de la UDG. FAQ, datos abiertos y más.",
     url: "https://agenda.cucei.dev/about",
   },
 };
