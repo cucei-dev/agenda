@@ -51,9 +51,10 @@ export const metadata: Metadata = {
       "Consulta materias, claves y arma tu horario académico de la UDG de forma fácil y visual.",
     images: [
       {
-        url: "/images/og-image.png",
-        width: 402,
-        height: 874,
+        /* TODO: Replace public/og-image.png with a 1200×630 landscape version */
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
         alt: "Agenda UDG – Buscador de materias y horarios académicos",
       },
     ],
@@ -63,7 +64,13 @@ export const metadata: Metadata = {
     title: "Agenda UDG – Buscador de materias y horarios",
     description:
       "Consulta materias, claves y arma tu horario académico de la UDG de forma fácil y visual.",
-    images: ["/images/og-image.png"],
+    images: [
+      {
+        /* TODO: Replace public/og-image.png with a 1200×630 landscape version */
+        url: "/og-image.png",
+        alt: "Agenda UDG – Buscador de materias y horarios académicos",
+      },
+    ],
     creator: "@cuceidev",
   },
   robots: {
@@ -89,7 +96,7 @@ export default async function RootLayout({
   const { calendarios, selectedCalendario } = await getSelectedCalendarioState();
 
   return (
-    <html lang="es" className={`${manrope.variable} ${inter.variable} light`}>
+    <html lang="es" className={`${manrope.variable} ${inter.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -177,6 +184,33 @@ export default async function RootLayout({
         <meta name="msapplication-TileColor" content="#78161e" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
         <meta name="theme-color" content="#78161e" />
+        {/* Twitter requires explicit image:width / image:height for large-image cards */}
+        <meta name="twitter:image:width" content="1200" />
+        <meta name="twitter:image:height" content="630" />
+        {/*
+          Anti-FART (Flash of inAccurate Theme): apply the stored or OS-preferred
+          theme to <html> BEFORE React hydrates, so the page paints with the
+          correct dark/light class from the first render.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(){
+                try {
+                  var t = localStorage.getItem("theme");
+                  if (!t) {
+                    t = window.matchMedia("(prefers-color-scheme: dark)").matches
+                      ? "dark"
+                      : "light";
+                  }
+                  if (t === "dark") {
+                    document.documentElement.classList.add("dark");
+                  }
+                } catch(e){}
+              })();
+            `,
+          }}
+        />
       </head>
       <body className="bg-surface text-on-surface font-body antialiased min-h-full flex flex-col">
         <a

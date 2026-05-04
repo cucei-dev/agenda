@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CalendarioSelector } from "@/components/layout/calendario-selector";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { navItems } from "@/data/mock";
 import type { ApiCalendario } from "@/lib/types";
 
@@ -46,10 +47,13 @@ export function TopNavBar({
               })}
             </nav>
           </div>
-          <CalendarioSelector
-            calendarios={calendarios}
-            selectedCalendarioId={selectedCalendarioId}
-          />
+          <div className="flex items-center gap-1">
+            <CalendarioSelector
+              calendarios={calendarios}
+              selectedCalendarioId={selectedCalendarioId}
+            />
+            <ThemeToggle />
+          </div>
         </div>
       </div>
       <div className="bg-[#f3f3f5] h-px w-full" />

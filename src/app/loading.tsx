@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 animate-pulse">
+    <div className="max-w-7xl mx-auto px-6 py-12 animate-pulse" data-essential-motion>
       {/* Hero section skeleton */}
       <div className="mb-16">
         <div className="h-12 md:h-14 bg-surface-container-high rounded-lg w-3/4 mb-8" />
