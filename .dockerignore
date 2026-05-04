@@ -6,6 +6,8 @@ AGENTS.md
 CLAUDE.md
 Dockerfile
 README.md
+.agents
+skills-lock.json
 
 # Logs
 logs
