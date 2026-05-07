@@ -94,13 +94,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { calendarios, selectedCalendario } = await getSelectedCalendarioState();
+  const { calendarios, selectedCalendario } =
+    await getSelectedCalendarioState();
 
   return (
     <html lang="es" className={`${manrope.variable} ${inter.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           rel="preload"
           as="style"
@@ -225,7 +230,9 @@ export default async function RootLayout({
           calendarios={calendarios}
           selectedCalendarioId={selectedCalendario?.id ?? null}
         />
-        <main id="main-content" className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1">
+          {children}
+        </main>
         <Footer />
         <BottomNavBar />
         <PwaInstallBanner />
@@ -236,6 +243,11 @@ export default async function RootLayout({
             }
           `}
         </Script>
+        <Script
+          src="https://a.rahcode.com/api/script.js"
+          data-site-id="ccf5c0e9dccb"
+          defer
+        ></Script>
       </body>
     </html>
   );
