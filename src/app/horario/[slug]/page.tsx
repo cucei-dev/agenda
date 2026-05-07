@@ -128,6 +128,7 @@ export default async function HorarioSlugPage({
       <ExportClient
         subjects={subjects}
         secciones={secciones}
+        aulasById={aulasById}
         totalCreditos={totalCreditos}
         missingSectionsCount={missingSectionsCount}
       />

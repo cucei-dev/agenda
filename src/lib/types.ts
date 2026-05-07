@@ -12,6 +12,7 @@ export interface SubjectClase {
 
 export interface Subject {
   nrc: string;
+  clave: string;
   nombre: string;
   profesor: string;
   creditos: number;

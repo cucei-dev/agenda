@@ -1,4 +1,4 @@
-import type { ApiSeccion } from "@/lib/types";
+import type { ApiAula, ApiSeccion } from "@/lib/types";
 import { getDiaDisplayName } from "@/lib/diaMap";
 
 /**
@@ -56,7 +56,10 @@ function uid(): string {
  * Generates an ICS (iCalendar) string from an array of ApiSeccion.
  * Each class session becomes a weekly recurring event spanning the semester period.
  */
-export function generateICS(secciones: ApiSeccion[]): string {
+export function generateICS(
+  secciones: ApiSeccion[],
+  aulasById?: Readonly<Record<number, ApiAula>>,
+): string {
   const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -104,15 +107,34 @@ export function generateICS(secciones: ApiSeccion[]): string {
       const horaFin = clase.hora_fin.slice(0, 5);
       const profesor = seccion.profesor?.name ?? "Profesor no asignado";
 
+      const aula = clase.aula_id !== null ? aulasById?.[clase.aula_id] : undefined;
+      const aulaName = aula?.name ?? null;
+      const edificioName = aula?.edificio?.name ?? null;
+
       lines.push("BEGIN:VEVENT");
       lines.push(`UID:${uid()}`);
       lines.push(`DTSTAMP:${toICalDateTime(new Date(), "00:00")}`);
       lines.push(`DTSTART;TZID=America/Mexico_City:${dtStart}`);
       lines.push(`DTEND;TZID=America/Mexico_City:${dtEnd}`);
       lines.push(`RRULE:FREQ=WEEKLY;BYDAY=${icalDay};UNTIL=${until}`);
-      lines.push(`SUMMARY:${escapeICalText(seccion.materia.name)}`);
       lines.push(
-        `DESCRIPTION:${escapeICalText(`NRC: ${seccion.nrc}\\nProfesor: ${profesor}\\n${diaName} ${horaInicio}–${horaFin}`)}`,
+        `SUMMARY:${escapeICalText(seccion.materia.name)} (CLA: ${seccion.materia.clave})`,
+      );
+      if (aulaName) {
+        lines.push(
+          `LOCATION:${escapeICalText(aulaName + (edificioName ? ` · ${edificioName}` : ""))}`,
+        );
+      }
+      lines.push(
+        `DESCRIPTION:${escapeICalText([
+          `NRC: ${seccion.nrc}`,
+          `Clave: ${seccion.materia.clave}`,
+          `Profesor: ${profesor}`,
+          aulaName ? `Aula: ${aulaName}${edificioName ? ` (${edificioName})` : ""}` : null,
+          `${diaName} ${horaInicio}–${horaFin}`,
+        ]
+          .filter(Boolean)
+          .join("\\n"))}`,
       );
       lines.push("END:VEVENT");
     }
@@ -123,8 +145,11 @@ export function generateICS(secciones: ApiSeccion[]): string {
 }
 
 /** Triggers a browser download of the ICS file. */
-export function downloadICS(secciones: ApiSeccion[]): void {
-  const content = generateICS(secciones);
+export function downloadICS(
+  secciones: ApiSeccion[],
+  aulasById?: Readonly<Record<number, ApiAula>>,
+): void {
+  const content = generateICS(secciones, aulasById);
   const blob = new Blob([content], { type: "text/calendar;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");

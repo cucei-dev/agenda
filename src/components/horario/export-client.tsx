@@ -2,9 +2,8 @@
 
 import { useRef, useCallback, useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { ApiSeccion, Subject, DayOfWeek } from "@/lib/types";
+import type { ApiAula, ApiSeccion, Subject, DayOfWeek } from "@/lib/types";
 import { getScheduleColor } from "@/lib/schedule-colors";
-import { getDiaDisplayName, formatHora } from "@/lib/diaMap";
 import { downloadICS } from "@/lib/ics";
 import { useScheduleStore } from "@/lib/schedule-store";
 import { MaterialIcon } from "@/components/ui/material-icon";
@@ -17,6 +16,7 @@ import { SummaryPanel } from "./summary-panel";
 interface ExportClientProps {
   subjects: Subject[];
   secciones: ApiSeccion[];
+  aulasById: Record<number, ApiAula>;
   totalCreditos: number;
   missingSectionsCount?: number;
 }
@@ -24,6 +24,7 @@ interface ExportClientProps {
 export function ExportClient({
   subjects,
   secciones,
+  aulasById,
   totalCreditos,
   missingSectionsCount = 0,
 }: Readonly<ExportClientProps>) {
@@ -33,24 +34,21 @@ export function ExportClient({
   const [isImporting, startImportTransition] = useTransition();
   const [copyLinkLabel, setCopyLinkLabel] = useState("Copiar enlace");
 
-  // Build calendar events from raw API sections (same logic as HorarioClient)
+  // Build calendar events from subjects (have resolved aula/edificio and clave)
   const calendarEvents: (ScheduleCalendarEvent & { dia: DayOfWeek })[] = [];
-  secciones.forEach((seccion, idx) => {
+  subjects.forEach((subject, idx) => {
     const color = getScheduleColor(idx);
-    for (const clase of seccion.clases) {
-      if (
-        clase.dia === null ||
-        clase.hora_inicio === null ||
-        clase.hora_fin === null
-      )
-        continue;
+    for (const clase of subject.clases) {
       calendarEvents.push({
-        materia: seccion.materia.name,
-        horaInicio: formatHora(clase.hora_inicio),
-        horaFin: formatHora(clase.hora_fin),
-        nrc: seccion.nrc,
+        materia: subject.nombre,
+        horaInicio: clase.horaInicio,
+        horaFin: clase.horaFin,
+        nrc: subject.nrc,
+        clave: subject.clave,
+        aula: clase.aula,
+        edificio: clase.edificio,
         color,
-        dia: getDiaDisplayName(clase.dia) as DayOfWeek,
+        dia: clase.dia as DayOfWeek,
       });
     }
   });
@@ -104,8 +102,8 @@ export function ExportClient({
   }, []);
 
   const handleExportCalendar = useCallback(() => {
-    downloadICS(secciones);
-  }, [secciones]);
+    downloadICS(secciones, aulasById);
+  }, [secciones, aulasById]);
 
   const handleImportSchedule = useCallback(() => {
     startImportTransition(() => {

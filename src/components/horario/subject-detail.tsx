@@ -25,10 +25,10 @@ export function SubjectDetailCard({
         </div>
         <div className="text-right">
           <span className="block text-xs font-semibold uppercase tracking-widest text-on-surface-variant font-label">
-            NRC
+            NRC · CLAVE
           </span>
           <span className="text-lg font-mono font-bold text-secondary">
-            {subject.nrc}
+            {subject.nrc} · {subject.clave}
           </span>
         </div>
       </div>

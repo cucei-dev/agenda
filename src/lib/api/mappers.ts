@@ -24,6 +24,7 @@ export function seccionToSubject(
 
   return {
     nrc: s.nrc,
+    clave: s.materia.clave,
     nombre: s.materia.name,
     profesor: s.profesor?.name ?? "Profesor no asignado",
     creditos: s.materia.creditos,
