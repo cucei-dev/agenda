@@ -25,11 +25,10 @@ export const CalendarEvent = memo(function CalendarEvent({ event, slotMinutes }:
 
   const heightPercent = (durationMin / slotMinutes) * 100;
 
-  const infoParts = [
-    event.clave && `CLA: ${event.clave}`,
-    event.nrc && `NRC: ${event.nrc}`,
-    event.aula && `${event.aula}${event.edificio ? ` · ${event.edificio}` : ""}`,
-  ].filter(Boolean) as string[];
+  const aulaEdificio =
+    event.aula
+      ? `${event.aula}${event.edificio ? ` · ${event.edificio}` : ""}`
+      : null;
 
   return (
     <div
@@ -44,9 +43,9 @@ export const CalendarEvent = memo(function CalendarEvent({ event, slotMinutes }:
       <h4 className="font-semibold text-[11px] leading-tight line-clamp-2">
         {event.materia}
       </h4>
-      {infoParts.length > 0 && (
+      {aulaEdificio && (
         <p className="text-[10px] leading-tight opacity-80 line-clamp-1">
-          {infoParts.join(" | ")}
+          {aulaEdificio}
         </p>
       )}
       <div className="flex items-center gap-1 text-[10px] opacity-80">

@@ -53,8 +53,10 @@ export function ExportClient({
     }
   });
 
-  const legendItems = secciones.map((s, idx) => ({
-    label: s.materia.name,
+  const legendItems = subjects.map((s, idx) => ({
+    label: s.nombre,
+    nrc: s.nrc,
+    clave: s.clave,
     color: getScheduleColor(idx),
   }));
 
