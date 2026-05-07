@@ -29,7 +29,7 @@ export function Legend({ items }: LegendProps) {
             <span className="text-xs font-body text-on-surface-variant">
               {item.label}
             </span>
-            {(item.nrc || item.clave) && (
+            {item.nrc && item.clave && (
               <span className="text-[10px] font-mono text-on-surface-variant/60">
                 {item.nrc} · {item.clave}
               </span>
