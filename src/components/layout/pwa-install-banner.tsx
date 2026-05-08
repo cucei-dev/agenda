@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { rybbitEvent } from "@/lib/analytics";
 
 const LS_KEY = "pwa-install-dismissed";
 
@@ -24,6 +25,7 @@ export function PwaInstallBanner() {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
       setVisible(true);
+      rybbitEvent("pwa_install_prompt_shown");
     };
 
     window.addEventListener("beforeinstallprompt", handler);
@@ -38,6 +40,7 @@ export function PwaInstallBanner() {
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === "accepted") {
       localStorage.setItem(LS_KEY, "1");
+      rybbitEvent("pwa_install_accepted");
     }
     setVisible(false);
     setDeferredPrompt(null);
@@ -46,6 +49,7 @@ export function PwaInstallBanner() {
   const handleDismiss = () => {
     localStorage.setItem(LS_KEY, "1");
     setVisible(false);
+    rybbitEvent("pwa_install_dismissed");
   };
 
   return (

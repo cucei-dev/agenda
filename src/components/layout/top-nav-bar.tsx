@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CalendarioSelector } from "@/components/layout/calendario-selector";
 import { navItems } from "@/data/mock";
+import { rybbitEvent } from "@/lib/analytics";
 import type { ApiCalendario } from "@/lib/types";
 
 interface TopNavBarProps {
@@ -34,6 +35,12 @@ export function TopNavBar({
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={() => {
+                      rybbitEvent("nav_click", {
+                        destination: item.href,
+                        label: item.label,
+                      });
+                    }}
                     className={
                       isActive
                         ? "text-primary font-bold border-b-2 border-primary pb-1 font-body text-sm"

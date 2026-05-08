@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navItems } from "@/data/mock";
+import { rybbitEvent } from "@/lib/analytics";
 
 export function BottomNavBar() {
   const pathname = usePathname();
@@ -15,6 +16,12 @@ export function BottomNavBar() {
           <Link
             key={item.href}
             href={item.href}
+            onClick={() => {
+              rybbitEvent("nav_click", {
+                destination: item.href,
+                label: item.label,
+              });
+            }}
             className={
               isActive
                 ? "flex flex-col items-center justify-center bg-primary text-white rounded-2xl px-5 py-2 transition-transform duration-300 ease-out active:scale-90"

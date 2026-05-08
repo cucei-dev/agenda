@@ -10,6 +10,7 @@ import { SidebarSubject } from "./sidebar-subject";
 import { Legend } from "./legend";
 import { MaterialIcon } from "@/components/ui/material-icon";
 import Link from "next/link";
+import { rybbitEvent } from "@/lib/analytics";
 
 export function HorarioClient() {
   const { sections, removeSection, clearAll } = useScheduleStore();
@@ -90,7 +91,14 @@ export function HorarioClient() {
                   entry.seccion.profesor?.name ?? "Profesor no asignado"
                 }
                 color={getScheduleColor(entry.colorIndex)}
-                onRemove={() => removeSection(entry.seccion.nrc)}
+                  onRemove={() => {
+                    removeSection(entry.seccion.nrc);
+                    rybbitEvent("schedule_remove_section", {
+                      nrc: entry.seccion.nrc,
+                      materia: entry.seccion.materia.name,
+                      remainingCount: sections.length - 1,
+                    });
+                  }}
               />
             ))}
           </div>
@@ -107,7 +115,12 @@ export function HorarioClient() {
               </div>
               <div className="flex gap-2">
                 <button
-                  onClick={clearAll}
+                  onClick={() => {
+                    clearAll();
+                    rybbitEvent("schedule_clear_all", {
+                      sectionsRemoved: sections.length,
+                    });
+                  }}
                   className="cursor-pointer bg-surface-container-high text-on-surface-variant px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1 hover:bg-error-container hover:text-on-error-container transition-colors"
                   title="Limpiar horario"
                 >
@@ -125,6 +138,12 @@ export function HorarioClient() {
             <div className="mt-4 flex justify-end">
               <Link
                 href={"/horario/" + btoa(sections.map((s) => s.seccion.nrc).join(","))}
+                onClick={() => {
+                  rybbitEvent("export_flow_start", {
+                    sectionsCount: sections.length,
+                    totalCreditos,
+                  });
+                }}
                 className="bg-gradient-to-br from-secondary to-secondary-container text-white px-4 py-2 rounded-md text-sm font-semibold shadow-md flex items-center gap-2"
               >
                 <MaterialIcon name="file_download" className="text-sm" />

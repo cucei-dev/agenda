@@ -8,6 +8,7 @@ import { downloadICS } from "@/lib/ics";
 import { useScheduleStore } from "@/lib/schedule-store";
 import { MaterialIcon } from "@/components/ui/material-icon";
 import { CalendarGrid } from "./calendar-grid";
+import { rybbitEvent } from "@/lib/analytics";
 import type { ScheduleCalendarEvent } from "./calendar-event";
 import { Legend } from "./legend";
 import { SubjectDetailCard } from "./subject-detail";
@@ -69,6 +70,10 @@ export function ExportClient({
       import("jspdf"),
     ]);
 
+    rybbitEvent("export_download_pdf", {
+      sectionsCount: subjects.length,
+    });
+
     const canvas = await html2canvas(el, {
       scale: 2,
       useCORS: true,
@@ -101,20 +106,30 @@ export function ExportClient({
 
     pdf.addImage(imgData, "PNG", x, y, w, h);
     pdf.save("horario-udg.pdf");
-  }, []);
+  }, [subjects.length]);
 
   const handleExportCalendar = useCallback(() => {
+    rybbitEvent("export_download_ics", {
+      sectionsCount: subjects.length,
+    });
     downloadICS(secciones, aulasById);
-  }, [secciones, aulasById]);
+  }, [secciones, aulasById, subjects.length]);
 
   const handleImportSchedule = useCallback(() => {
+    rybbitEvent("export_import_schedule", {
+      sectionsCount: secciones.length,
+      totalCreditos,
+    });
     startImportTransition(() => {
       replaceSections(secciones);
       router.push("/horario");
     });
-  }, [replaceSections, router, secciones]);
+  }, [replaceSections, router, secciones, totalCreditos]);
 
   const handleCopyLink = useCallback(async () => {
+    rybbitEvent("export_copy_link", {
+      sectionsCount: subjects.length,
+    });
     try {
       await globalThis.navigator.clipboard.writeText(globalThis.location.href);
       setCopyLinkLabel("Enlace copiado");
@@ -123,7 +138,7 @@ export function ExportClient({
       setCopyLinkLabel("No se pudo copiar");
       globalThis.setTimeout(() => setCopyLinkLabel("Copiar enlace"), 2200);
     }
-  }, []);
+  }, [subjects.length]);
 
   return (
     <>

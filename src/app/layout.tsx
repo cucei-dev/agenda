@@ -5,6 +5,7 @@ import { TopNavBar } from "@/components/layout/top-nav-bar";
 import { BottomNavBar } from "@/components/layout/bottom-nav-bar";
 import { Footer } from "@/components/layout/footer";
 import { PwaInstallBanner } from "@/components/layout/pwa-install-banner";
+import { PageViewTracker } from "@/components/layout/page-view-tracker";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-jsonld";
 import { getSelectedCalendarioState } from "@/lib/calendario-selection";
 import "./globals.css";
@@ -236,6 +237,7 @@ export default async function RootLayout({
         <Footer />
         <BottomNavBar />
         <PwaInstallBanner />
+        <PageViewTracker />
         <Script id="service-worker-registration" strategy="afterInteractive">
           {`
             if (typeof navigator.serviceWorker !== "undefined") {

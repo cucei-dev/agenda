@@ -14,6 +14,7 @@ import { HeroSection } from "./hero-section";
 import { SubjectCard } from "./subject-card";
 import { MaterialIcon } from "@/components/ui/material-icon";
 import { StatsSidebar } from "./stats-sidebar";
+import { rybbitEvent } from "@/lib/analytics";
 
 interface BuscadorClientProps {
   calendarioId: number;
@@ -43,6 +44,11 @@ export function BuscadorClient({ calendarioId, centros, initialQuery = "" }: Bus
   } | null>(null);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const queryRef = useRef(query);
+
+  useEffect(() => {
+    queryRef.current = query;
+  }, [query]);
 
   const fetchResults = useCallback(
     async (
@@ -67,12 +73,29 @@ export function BuscadorClient({ calendarioId, centros, initialQuery = "" }: Bus
           true,
         );
 
+        if (!append) {
+          rybbitEvent("search_query", {
+            query: queryRef.current.trim(),
+            centroId: centroId,
+            resultsCount: data.total,
+          });
+          if (data.results.length === 0) {
+            rybbitEvent("search_no_sections", {
+              query: queryRef.current.trim(),
+              centroId: centroId,
+            });
+          }
+        }
         setTotal(data.total);
         setResults((prev) =>
           append ? [...prev, ...data.results] : data.results,
         );
       } catch {
         setError("No se pudo conectar con la API. Intenta de nuevo.");
+        rybbitEvent("api_error", {
+          endpoint: "listSecciones",
+          message: "API connection error",
+        });
       } finally {
         setIsLoading(false);
         setIsLoadingMore(false);
@@ -109,12 +132,19 @@ export function BuscadorClient({ calendarioId, centros, initialQuery = "" }: Bus
           setResults([]);
           setTotal(0);
           setIsLoading(false);
+          rybbitEvent("search_no_results", {
+            query: query.trim(),
+          });
           return;
         }
         setMateriaId(materia.id);
         fetchResults(materia.id, selectedCentroId, 0, false);
       } catch {
         setError("No se pudo conectar con la API. Intenta de nuevo.");
+        rybbitEvent("api_error", {
+          endpoint: "searchMateriasByClave",
+          message: "API connection error",
+        });
         setIsLoading(false);
       }
     }, 1000);
@@ -124,26 +154,52 @@ export function BuscadorClient({ calendarioId, centros, initialQuery = "" }: Bus
     };
   }, [query, selectedCentroId, fetchResults]);
 
+  function handleCentroChange(id: number | null) {
+    setSelectedCentroId(id);
+    rybbitEvent("filter_centro", { centroId: id });
+  }
+
   function handleLoadMore() {
     const nextSkip = skip + PAGE_SIZE;
     setSkip(nextSkip);
     fetchResults(materiaId, selectedCentroId, nextSkip, true);
+    rybbitEvent("load_more_results", {
+      page: "buscador",
+      currentCount: results.length,
+      total,
+    });
   }
 
   function handleAddToSchedule(seccion: ApiSeccion) {
     const result: AddResult = addSection(seccion);
     if (result.ok) {
+      rybbitEvent("schedule_add_section", {
+        nrc: seccion.nrc,
+        materia: seccion.materia.name,
+        centro: seccion.centro.name,
+        creditos: seccion.materia.creditos,
+      });
       router.push("/horario");
       return;
     }
     if ("conflict" in result) {
       const c = result.conflict;
+      rybbitEvent("schedule_add_conflict", {
+        nrcTrying: seccion.nrc,
+        nrcConflict: c.existingNrc,
+        materiaConflict: c.existingMateria,
+        dia: c.dia,
+        hora: `${c.horaInicio}–${c.horaFin}`,
+      });
       setToast({
         message: `Conflicto de horario: ${c.existingMateria} (NRC ${c.existingNrc}) ya ocupa ${getDiaDisplayName(c.dia)} ${c.horaInicio}–${c.horaFin}`,
         type: "error",
         id: seccion.id,
       });
     } else if (result.reason === "duplicate") {
+      rybbitEvent("schedule_add_duplicate", {
+        nrc: seccion.nrc,
+      });
       router.push("/horario");
     } else {
       setToast({
@@ -164,7 +220,7 @@ export function BuscadorClient({ calendarioId, centros, initialQuery = "" }: Bus
         <HeroSection
           centros={centros}
           selectedCentroId={selectedCentroId}
-          onCentroChange={setSelectedCentroId}
+          onCentroChange={handleCentroChange}
           query={query}
           onQueryChange={setQuery}
           loading={isLoading}

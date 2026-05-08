@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { listMaterias } from "@/lib/api/materias";
 import type { ApiMateria } from "@/lib/types";
+import { rybbitEvent } from "@/lib/analytics";
 
 const PAGE_SIZE = 20;
 
@@ -33,6 +34,10 @@ export function MateriasClient() {
         setHasSearched(true);
       } catch {
         setError("No se pudo conectar con la API. Intenta de nuevo.");
+        rybbitEvent("api_error", {
+          endpoint: "listMaterias",
+          message: "API connection error",
+        });
       } finally {
         setIsLoading(false);
         setIsLoadingMore(false);
@@ -55,6 +60,11 @@ export function MateriasClient() {
   const handleLoadMore = () => {
     const nextSkip = skip + PAGE_SIZE;
     setSkip(nextSkip);
+    rybbitEvent("load_more_results", {
+      page: "materias",
+      currentCount: results.length,
+      total,
+    });
     fetchMaterias(query, nextSkip, true);
   };
 
@@ -122,6 +132,12 @@ export function MateriasClient() {
             <li key={materia.id}>
               <Link
                 href={`/?clave=${encodeURIComponent(materia.clave)}`}
+                onClick={() => {
+                  rybbitEvent("search_result_click", {
+                    clave: materia.clave,
+                    source: "catalogo",
+                  });
+                }}
                 className="flex items-center gap-4 bg-surface-container-lowest rounded-2xl px-5 py-4 shadow-[0_2px_8px_rgba(26,28,29,0.04)] hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] hover:translate-y-[-2px] transition-all block"
               >
                 <span className="shrink-0 font-label text-xs font-semibold tracking-wider bg-secondary-container text-on-secondary-container rounded-lg px-3 py-1.5 min-w-[5rem] text-center">

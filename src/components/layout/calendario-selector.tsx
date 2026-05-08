@@ -4,6 +4,7 @@ import { useOptimistic, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { setSelectedCalendarioAction } from "@/app/actions/set-selected-calendario";
 import { MaterialIcon } from "@/components/ui/material-icon";
+import { rybbitEvent } from "@/lib/analytics";
 import type { ApiCalendario } from "@/lib/types";
 
 interface CalendarioSelectorProps {
@@ -23,6 +24,11 @@ export function CalendarioSelector({
 
   function handleChange(nextValue: string) {
     setOptimisticValue(nextValue);
+
+    rybbitEvent("calendario_change", {
+      fromCalendarioId: selectedValue === "" ? null : Number(selectedValue),
+      toCalendarioId: Number(nextValue),
+    });
 
     startTransition(async () => {
       await setSelectedCalendarioAction(Number(nextValue));
