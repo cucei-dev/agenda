@@ -244,9 +244,9 @@ export default async function RootLayout({
           `}
         </Script>
         <Script
-          src="https://a.rahcode.com/api/script.js"
-          data-site-id="ccf5c0e9dccb"
-          defer
+          src="/api/script.js"
+          data-site-id={process.env.NEXT_PUBLIC_RYBBIT_SITE_ID}
+          strategy="afterInteractive"
         ></Script>
       </body>
     </html>
