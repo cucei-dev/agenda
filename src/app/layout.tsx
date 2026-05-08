@@ -246,7 +246,7 @@ export default async function RootLayout({
           `}
         </Script>
         <Script
-          src="/api/script.js"
+          src={process.env.NEXT_PUBLIC_RYBBIT_HOST}
           data-site-id={process.env.NEXT_PUBLIC_RYBBIT_SITE_ID}
           strategy="afterInteractive"
         ></Script>
