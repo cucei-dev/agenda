@@ -238,10 +238,25 @@ export default async function RootLayout({
         <BottomNavBar />
         <PwaInstallBanner />
         <PageViewTracker />
-        <Script id="service-worker-registration" strategy="afterInteractive">
+        <Script id="clear-sw" strategy="afterInteractive">
           {`
-            if (typeof navigator.serviceWorker !== "undefined") {
-              navigator.serviceWorker.register("/service-worker.js");
+            if ('serviceWorker' in navigator) {
+              // Desregistrar todos los service workers
+              navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                  registration.unregister();
+                  console.log('Service Worker desregistrado');
+                }
+              });
+              
+              if ('caches' in window) {
+                caches.keys().then(function(names) {
+                  for(let name of names) {
+                    caches.delete(name);
+                    console.log('Cache eliminada:', name);
+                  }
+                });
+              }
             }
           `}
         </Script>
