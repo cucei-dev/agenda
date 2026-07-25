@@ -15,7 +15,7 @@ export async function listSecciones(
   isClient = false
 ): Promise<ApiPagination<ApiSeccion>> {
   return apiFetch<ApiPagination<ApiSeccion>>(
-    "/api/v1/secciones/",
+    "/api/v2/secciones",
     {
       calendario_id: params.calendarioId,
       centro_id: params.centroId ?? null,

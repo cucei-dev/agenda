@@ -5,7 +5,7 @@ export async function searchMateriasByClave(
   clave: string,
   isClient = false
 ): Promise<ApiMateria | null> {
-  const data = await apiFetch<ApiPagination<ApiMateria>>("/api/v1/materias/", {
+  const data = await apiFetch<ApiPagination<ApiMateria>>("/api/v2/materias", {
     clave,
     limit: 1,
   }, undefined, isClient);
@@ -17,7 +17,7 @@ export async function listMaterias(
   isClient = false
 ): Promise<ApiPagination<ApiMateria>> {
   return apiFetch<ApiPagination<ApiMateria>>(
-    "/api/v1/materias/",
+    "/api/v2/materias",
     {
       search: params.search,
       skip: params.skip ?? 0,
