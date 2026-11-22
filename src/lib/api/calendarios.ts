@@ -3,7 +3,7 @@ import { apiFetch } from "./client";
 
 export async function listCalendarios(): Promise<ApiCalendario[]> {
   const data = await apiFetch<ApiPagination<ApiCalendario>>(
-    "/api/v2/calendarios",
+    "/api/v1/calendarios/",
     { limit: 100 },
     { next: { revalidate: 3600 } },
   );
